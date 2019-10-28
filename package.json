@@ -1,0 +1,37 @@
+{
+  "name": "k-hubeau",
+  "description": "",
+  "version": "0.1.0",
+  "homepage": "https://github.com/kalisio/k-hubeau",
+  "keywords": [
+    "krawler",
+    "kargo",
+    "feathers",
+    "feathers-plugin",
+    "hubeau"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/kalisio/k-hubeau.git"
+  },
+  "author": {
+    "name": "Kalisio",
+    "url": "https://github.com/kalisio"
+  },
+  "contributors": [],
+  "bugs": {
+    "url": "https://github.com/kalisio/k-hubeau/issues"
+  },
+  "scripts": {
+    "test": "echo \"Warning: no test specified\"",
+    "release:patch": "npm version --no-git-tag-version --force patch",
+    "release:minor": "npm version --no-git-tag-version --force minor",
+    "release:major": "npm version --no-git-tag-version --force major"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "peerDependencies": {
+    "@kalisio/krawler": "0.9.0"
+  }
+}

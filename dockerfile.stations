@@ -1,0 +1,17 @@
+FROM  node:8-stretch
+
+MAINTAINER Kalisio <contact@kalisio.xyz>
+
+ARG KRAWLER_BRANCH
+ENV KRAWLER_BRANCH=$KRAWLER_BRANCH
+
+RUN git clone https://github.com/kalisio/krawler.git -b $KRAWLER_BRANCH --single-branch && cd krawler && yarn && cd ..
+
+# Install Job
+COPY config.js .
+COPY jobfile-stations.js .
+
+HEALTHCHECK --interval=1m --timeout=10s --start-period=1m CMD node ./krawler/healthcheck.js
+
+CMD node ./krawler --run --cron "0 0 0 * * *" jobfile-stations.js
+
