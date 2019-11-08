@@ -1,18 +1,27 @@
-FROM  node:8-stretch
+ARG KRAWLER_TAG
 
-MAINTAINER Kalisio <contact@kalisio.xyz>
+# 
+# Make a Krawler image alias to be able to take into account the KRAWLER_TAG argument
+#
+FROM kalisio/krawler:${KRAWLER_TAG} AS krawler
 
-ARG KRAWLER_BRANCH
-ENV KRAWLER_BRANCH=$KRAWLER_BRANCH
+#
+# Make the job image using the krawler image alias
+#
+FROM node:8-buster-slim
+LABEL maintainer="Kalisio <contact@kalisio.xyz>"
 
-RUN git clone https://github.com/kalisio/krawler.git -b $KRAWLER_BRANCH --single-branch && cd krawler && yarn && yarn link && cd ..
-RUN yarn link @kalisio/krawler
-ENV NODE_PATH=/krawler/node_modules
+# Copy Krawler from the Krawler image alias
+COPY --from=krawler /opt/krawler /opt/krawler
+RUN echo ${KRAWLER_TAG} && cd /opt/krawler && yarn link && yarn link @kalisio/krawler
 
-# Install job
+# Install the job
 COPY config.js .
 COPY jobfile-observations.js .
 
+# Add default healthcheck
 HEALTHCHECK --interval=1m --timeout=10s --start-period=1m CMD node ./krawler/healthcheck.js
 
-CMD node ./krawler --cron "0 10,25,40,55 * * * *" jobfile-observations.js
+# Run the job
+ENV NODE_PATH=/opt/krawler/node_modules
+CMD node ./krawler --cron "0,30 * * * *" jobfile-observations.js
