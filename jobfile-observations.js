@@ -138,7 +138,7 @@ module.exports = {
         generateTasks: {
           baseUrl: 'http://hubeau.eaufrance.fr/api/v1/hydrometrie/observations_tr?',
           series:  ["H", "Q"],
-          initialTime: Date.now() - (1 * 24 * 60 * 60 * 1000)  // days in ms
+          initialTime: Date.now() - (1 * 12 * 60 * 60 * 1000)  // days in ms
         }
       },
       after: {
