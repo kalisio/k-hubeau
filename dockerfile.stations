@@ -13,7 +13,7 @@ LABEL maintainer="Kalisio <contact@kalisio.xyz>"
 
 # Copy Krawler from the Krawler image alias
 COPY --from=krawler /opt/krawler /opt/krawler
-RUN echo ${KRAWLER_TAG} && cd /opt/krawler && yarn link && yarn link @kalisio/krawler
+RUN cd /opt/krawler && yarn link && yarn link @kalisio/krawler
 
 # Install the job
 COPY config.js .
