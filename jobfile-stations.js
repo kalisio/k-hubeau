@@ -22,6 +22,7 @@ module.exports = {
           collection: 'hubeau-stations'
         },
         writeMongoCollection: {
+          transformPath: 'features',
           collection: 'hubeau-stations'
         },
         clearData: {}
