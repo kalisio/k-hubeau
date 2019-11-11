@@ -47,7 +47,7 @@ module.exports = {
           clientPath: 'taskTemplate.client',
           collection: 'hubeau-stations',
           indices: [
-            { code_station: 1 }, 
+            { 'properties.code_station': 1 }, 
             { geometry: '2dsphere' }
           ]
         }
