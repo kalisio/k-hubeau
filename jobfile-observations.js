@@ -82,7 +82,7 @@ module.exports = {
                     coordinates: [obs.longitude, obs.latitude]
                   },
                   properties: {
-                    name: obs.code_station,
+                    name: obs.libelle_station,
                     code_station: obs.code_station,
                     [obs.grandeur_hydro]: obs.resultat_obs / 1000
                   }
