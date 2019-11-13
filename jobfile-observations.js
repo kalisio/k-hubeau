@@ -79,12 +79,12 @@ module.exports = {
                   time: timeObsUTC,
                   geometry: {
                     type: 'Point',
-                    coordinates: [ obs.longitude, obs.latitude ]
+                    coordinates: [obs.longitude, obs.latitude]
                   },
                   properties: {
                     name: obs.code_station,
                     code_station: obs.code_station,
-                    [obs.grandeur_hydro]: obs.resultat_obs
+                    [obs.grandeur_hydro]: obs.resultat_obs / 1000
                   }
                 }
                 features.push(observation_feature)
