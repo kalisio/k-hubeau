@@ -18,11 +18,15 @@ module.exports = {
     tasks: {
       after: {
         readJson: {},
+        transformJson: {
+          transformPath: 'features',
+          // Omit closed stations
+          filter: { 'properties.date_fermeture_station': null }
+        },
         deleteMongoCollection: {
           collection: 'hubeau-stations'
         },
         writeMongoCollection: {
-          transformPath: 'features',
           collection: 'hubeau-stations'
         },
         clearData: {}
