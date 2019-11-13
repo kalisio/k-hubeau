@@ -51,7 +51,7 @@ module.exports = {
       before: {
         readMongoCollection: {
           collection: 'hubeau-observations',
-          dataPath: 'data.recentDataTime',
+          dataPath: 'data.mostRecentObservations',
           query: { 'properties.code_station': '<%= code_station %>', 'properties.<%= serie %>': { $exists: true } },
           sort: { time: -1 },
           limit: 1
@@ -68,12 +68,13 @@ module.exports = {
           function: (item) => {
             let features = []
             let lastTime = item.initialTime
-            if (item.recentDataTime.length === 1) {
-              lastTime = item.recentDataTime[0].time.getTime()
+            if (item.mostRecentObservations.length === 1) {
+              lastTime = item.mostRecentObservations[0].time.getTime()
             }
             _.forEach(item.data.data, (obs) => {
               let timeObsUTC= new Date(obs.date_obs).getTime()
               if (timeObsUTC > lastTime) {
+                const station_feature = _.find(stations, (station) => { return station.properties.code_station === item.code_station })
                 let observation_feature = { 		  
                   type: 'Feature',
                   time: timeObsUTC,
@@ -82,7 +83,7 @@ module.exports = {
                     coordinates: [obs.longitude, obs.latitude]
                   },
                   properties: {
-                    name: obs.libelle_station,
+                    name: station_feature.properties.libelle_station,
                     code_station: obs.code_station,
                     [obs.grandeur_hydro]: obs.resultat_obs / 1000
                   }
