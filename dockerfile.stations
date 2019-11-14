@@ -20,7 +20,7 @@ COPY config.js .
 COPY jobfile-stations.js .
 
 # Add default healthcheck
-HEALTHCHECK --interval=1m --timeout=10s --start-period=1m CMD node ./krawler/healthcheck.js
+HEALTHCHECK --interval=1m --timeout=10s --start-period=1m CMD node /opt/krawler/healthcheck.js
 
 # Run the job
 ENV NODE_PATH=/opt/krawler/node_modules
