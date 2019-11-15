@@ -1,17 +1,37 @@
 language: node_js
 node_js:
-- '8'
+  - '8'
 sudo: required
 
 services:
   - docker
+
 notifications:
   email: false
   slack:
     rooms:
-      secure: BTEQavkGV9RXCgX797/I3Spy1mrBYDQxow9xIQZ4+Ismajec1MufEamrtcYcNLl9/h9CYgmYNSbi0HLjTLv6KrStwvVaJdS0ta2EUKNmR6lNpUSlQfITd1Qd2d0+wE0r6dKGQYlJpZESVKk4FEvWWFv6GTWxv61UrB197AAkuUUmndoBylSoomzjI1aFLqmnU51TR0e4AU8QD7eBTOiVFAkvLlV3+xC8tZFCwSR+2+RPGWXhCwjNrJMMm0Zw695ivpvZFjcYNiF0Hv82YEmv592v7Y7fW/kpQCQ7KjoTL5UNATZBiefHaP/4jr/qrchEIip1BAZ9mIKoEsoy+v9Kb7oYL5bPC0JDuLNJDxlNGicuOpVeberGCj7/OVhwr6IqFAPLgtos9v21bwzcpVf5mM0p75FLFpDow6w+SF4V0lrWJXxAac0lWEXsMvImi8NsjhNVG6hZ6xjhCfTN3iQ87bCmZCPq1QMLUf+9F9G1tOCZHw7XnoGqtzHXby4/4DszgSQ0i24a15DwVvPH8+7dKyl8x8R0EYtE42P6gEc1gzD4iO9wNPRdqqe08SgcIaf5qQ+ZMe82BmCCuqGTMPJvVIgcu1isYIQ/rshgvUHyaFT3Lz1soWxlu6UpsikklZFhfn84yU7CLOsvcGkmWvNvybUGrQCubb91U+ycFqaO7ac=
+      secure: WuuqaxaQDy7IBzwfR/kJHLce5TOkGGlTxZ5nOG+S6KaG1hnIk/Xnaewp+mijmrsrSzcKzhhCdkF6Bq/Ib/uC76PpwYdgMlP5UCVnd41C3P8atuDdjeHwE4d9u7jAGkKPEmhVzescFef67B9YZJZR2Z4QOG+4GPDMOti/lyBpHYvyTELZHYQoCWYSXJaFkSvzHNL2QGPICsNVtYxagdejCr9dC6c2D37UUBy3Cew5YIqj1FPaV1WTWy5VE79UwcufjiYy3SKBvw7YN0skCmloDg+2esOFr5QHZgkzAHmiXGsSM4FxGfE1c2TpvSMNFbaZkgDUl6BY+TDtrORIUiUjpb6skGNJgP4deSSLNTZXGcnw3DdQRwNHUO229TRYscdAN3HGsNFD/6rwL3UQMP/UWfjv0YDGirfd19gVpuplo4QgQonCgURva3E7RQrSDtGhzMj7U1IqnHDDsQz3JQYsCsRuXiR+wwoceBozbPr7ue+LtqAlDa+CM8mkTKB6QL0mW8lDlQnIfQ/OLGmHFYu9knab/LOvMYwfHscPxjlSxtednj/KigOjJq7XiLugmLG6QG7nfSVfvAZTgiD+MzBOyxlzECVVlSTLV2YOV87Y1VdvtVcLqD7nkBNUMop+SYH25N/+/65tBX4cvMnMg8ljPXuAPVOQrtZNXFHnyp5Da1Y=
     on_success: always
     on_failure: always
 
 script:
-  - bash .travis.build.sh
+  - |
+   IMAGE_NAME="$TRAVIS_REPO_SLUG"
+   if [[ -z "$TRAVIS_TAG" ]]; then
+     IMAGE_TAG=latest
+     KRAWLER_TAG=latest
+   else
+     IMAGE_TAG=$(node -p -e "require('./package.json').version")
+     KRAWLER_TAG=v$(node -p -e "require('./package.json').peerDependencies['@kalisio/krawler']")
+   fi
+   docker build --build-arg KRAWLER_TAG=$KRAWLER_TAG -f dockerfile.stations -t $IMAGE_NAME:stations-$IMAGE_TAG .
+   docker build --build-arg KRAWLER_TAG=$KRAWLER_TAG -f dockerfile.observations -t $IMAGE_NAME:observations-$IMAGE_TAG .
+
+before_deploy:
+  - docker login -u="$DOCKER_USER" -p="$DOCKER_PASSWORD"
+
+deploy:
+  provider: script
+  script: docker push $IMAGE_NAME:stations-$IMAGE_TAG && docker push $IMAGE_NAME:observations-$IMAGE_TAG
+  on:
+    all_branches: true
