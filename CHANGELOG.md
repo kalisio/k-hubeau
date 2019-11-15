@@ -1,10 +1,5 @@
 #### 0.1.0 (2019-11-15)
 
-##### Build System / Dependencies
-
-*  try to fix issued container ([8ee40bbc](https://github.com/kalisio/k-hubeau/commit/8ee40bbccf91ec7873c2cf9836fdd8ea5cbdcd0a))
-*  Enhance dockerfiles to use krawler based image (closed [#1](https://github.com/kalisio/k-hubeau/pull/1)) ([1e2ab316](https://github.com/kalisio/k-hubeau/commit/1e2ab316b11636d99b8806e46111432c5381b7fe))
-
 ##### New Features
 
 *  Observation features do not handle the correct name (closed [#5](https://github.com/kalisio/k-hubeau/pull/5)] ([02f4b763](https://github.com/kalisio/k-hubeau/commit/02f4b763b5ed5e670a043d4073747f9d7174b558))
@@ -12,6 +7,7 @@
 
 ##### Other Changes
 
+* //github.com/kalisio/k-hubeau ([c608d4ca](https://github.com/kalisio/k-hubeau/commit/c608d4caea5a12680b00168b9f447caab05182d0))
 *  Default healthchecks are incorrect (closed [#7](https://github.com/kalisio/k-hubeau/pull/7)) ([546bc0f2](https://github.com/kalisio/k-hubeau/commit/546bc0f2b009dcab9a048f27ac52b294550003c4))
 *  Observation features do not handle the correct name [#5](https://github.com/kalisio/k-hubeau/pull/5) ([1626c592](https://github.com/kalisio/k-hubeau/commit/1626c592b292a745c1d41ff6d808a458f421f788))
 *  executes the observations job every 15 minutes [#4](https://github.com/kalisio/k-hubeau/pull/4) ([9a8ed77e](https://github.com/kalisio/k-hubeau/commit/9a8ed77eef5a27051e054c7794016405f38466f0))
@@ -26,4 +22,7 @@
 *  Enhance dockerfiles to use krawler based image [#1](https://github.com/kalisio/k-hubeau/pull/1) ([a95be3bc](https://github.com/kalisio/k-hubeau/commit/a95be3bcfc16bbcc91aacd3d65d128180c4337c9))
 *  Enhance dockerfiles to use krawler based image [#1](https://github.com/kalisio/k-hubeau/pull/1) ([ca01d985](https://github.com/kalisio/k-hubeau/commit/ca01d98527a2981ff930a5082004584ea52331ab))
 *  Enhance dockerfiles to use krawler based image [#1](https://github.com/kalisio/k-hubeau/pull/1) ([24443a47](https://github.com/kalisio/k-hubeau/commit/24443a4755746158fb69e728e10b7fcd3d30bfb4))
+
+
+
 
