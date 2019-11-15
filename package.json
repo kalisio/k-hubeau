@@ -30,7 +30,9 @@
     "release:major": "npm version --no-git-tag-version --force major"
   },
   "dependencies": {},
-  "devDependencies": {},
+  "devDependencies": {
+    "generate-changelog": "^1.8.0"
+  },
   "peerDependencies": {
     "@kalisio/krawler": "0.9.0"
   }
