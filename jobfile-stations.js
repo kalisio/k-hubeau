@@ -1,3 +1,5 @@
+const _ = require('lodash')
+
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/hubeau'
 
 module.exports = {
@@ -18,10 +20,21 @@ module.exports = {
     tasks: {
       after: {
         readJson: {},
-        transformJson: {
-          transformPath: 'features',
-          // Omit closed stations
-          filter: { 'properties.date_fermeture_station': null }
+        apply: {
+          function: (item) => {
+            let stations = []
+            if (item.data.features) {
+              item.data.features.forEach(feature => {
+                let name = feature.properties.libelle_station || feature.properties.libelle_site || feature.properties.libelle_commune
+                if (feature.properties.en_service === true) {
+                  let station = _.cloneDeep(feature)
+                  _.set(station, 'properties.name', name)
+                  stations.push(station)
+                } else console.log('station ' + name + ' is inactive' )
+              })
+            }
+            item.data = stations
+          }
         },
         deleteMongoCollection: {
           collection: 'hubeau-stations'
