@@ -40,7 +40,7 @@ module.exports = {
   options: {
     workersLimit: 4,
     faultTolerant: true,
-    timeout: 30 * 60 * 1000
+    timeout: 25 * 60 * 1000
   },
   taskTemplate: {
     id: 'hubeau/observations/<%= taskId %>',
