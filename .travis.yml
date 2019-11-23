@@ -14,9 +14,14 @@ notifications:
     on_success: always
     on_failure: always
 
+env:
+  - JOB=stations
+  - JOB=observations
+
 script:
   - |
-   IMAGE_NAME="$TRAVIS_REPO_SLUG"
+   REPO_SLUG="$TRAVIS_REPO_SLUG"
+   IMAGE_NAME=${REPO_SLUG,,} # to lowercase
    if [[ -z "$TRAVIS_TAG" ]]; then
      IMAGE_TAG=latest
      KRAWLER_TAG=latest
@@ -24,14 +29,13 @@ script:
      IMAGE_TAG=$(node -p -e "require('./package.json').version")
      KRAWLER_TAG=v$(node -p -e "require('./package.json').peerDependencies['@kalisio/krawler']")
    fi
-   docker build --build-arg KRAWLER_TAG=$KRAWLER_TAG -f dockerfile.stations -t $IMAGE_NAME:stations-$IMAGE_TAG .
-   docker build --build-arg KRAWLER_TAG=$KRAWLER_TAG -f dockerfile.observations -t $IMAGE_NAME:observations-$IMAGE_TAG .
+   docker build --build-arg KRAWLER_TAG=$KRAWLER_TAG -f dockerfile."$JOB" -t $IMAGE_NAME:"$JOB""-$IMAGE_TAG .
 
 before_deploy:
   - docker login -u="$DOCKER_USER" -p="$DOCKER_PASSWORD"
 
 deploy:
   provider: script
-  script: docker push $IMAGE_NAME:stations-$IMAGE_TAG && docker push $IMAGE_NAME:observations-$IMAGE_TAG
+  script: docker push $IMAGE_NAME:"$JOB"-$IMAGE_TAG
   on:
     all_branches: true
