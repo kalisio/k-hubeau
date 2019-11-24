@@ -38,9 +38,9 @@ module.exports = {
   id: 'hubeau-observations',
   store: 'memory',
   options: {
-    workersLimit: 4,
+    workersLimit: 2,
     faultTolerant: true,
-    timeout: 25 * 60 * 1000
+    timeout: 55 * 60 * 1000
   },
   taskTemplate: {
     id: 'hubeau/observations/<%= taskId %>',
