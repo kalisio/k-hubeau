@@ -7,6 +7,17 @@ A [Krawler](https://kalisio.github.io/krawler/) based service to download data f
 ## Getting started
 
 
+
+## Configuration
+
+The job configuration can be overriden using the following environment variables:
+
+| Variable | Description |
+|--- | --- |
+| `OBSERVATIONS_TTL` | The observations data time to live. It must be expressed in seconds and the default value is `604 800` (7 days) | 
+| `OBSERVATIONS_HISTORY` | The duration of the observations data history the job has to download. It must be expressed in milliseconds and the default value is `86 400 000` (1 day) | 
+| `TIMEOUT` | The maximum duration of the job. It must be in milliseconds and the default value is `1 800 000` (30 minutes). |
+
 ## Deployment
 
 -TODO-

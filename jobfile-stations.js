@@ -30,7 +30,7 @@ module.exports = {
                   let station = _.cloneDeep(feature)
                   _.set(station, 'properties.name', name)
                   stations.push(station)
-                } else console.log('station ' + name + ' is inactive' )
+                } else console.log('warning: station ' + name + ' is inactive' )
               })
             }
             item.data = stations

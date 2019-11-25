@@ -2,9 +2,11 @@ const krawler = require('@kalisio/krawler')
 const hooks = krawler.hooks
 const _ = require('lodash')
 
-const config = require('./config')
-
+// Configuration
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/hubeau'
+const ttl = process.env.OBSERVATIONS_TTL || (7 * 24 * 60 * 60)  // duration in seconds
+const history =  process.env.OBSERVATIONS_HISTORY || (1 * 24 * 60 * 60 * 1000) // duration in miliseconds
+const timeout = process.env.TIMEOUT || (30 * 60 * 1000) // duration in miliseconds
 
 let stations = null
 
@@ -14,19 +16,16 @@ let generateTasks = (options) => {
     let tasks = []
     stations = hook.data.stations
     stations.forEach(station => {
-      options.series.forEach(serie => {
-        let initialDate = new Date(options.initialTime).toISOString()
-        let task = {
-          id: station.properties.code_station + '-' + serie,
-          initialTime: options.initialTime,
-          code_station: station.properties.code_station,
-          serie: serie,
-          options: {
-            url: options.baseUrl + 'code_entite=' + station.properties.code_station + '&grandeur_hydro=' + serie + '&date_debut_obs=' + initialDate + '&size=10000'
-          }
+      let initialDate = new Date(options.initialTime).toISOString()
+      let task = {
+        id: station.properties.code_station,
+        initialTime: options.initialTime,
+        code_station: station.properties.code_station,
+        options: {
+          url: options.baseUrl + 'code_entite=' + station.properties.code_station + '&date_debut_obs=' + initialDate + '&size=10000'
         }
-        tasks.push(task)
-      })
+      }
+      tasks.push(task)
     })
     hook.data.tasks = tasks
     return hook
@@ -36,11 +35,11 @@ hooks.registerHook('generateTasks', generateTasks)
 
 module.exports = {
   id: 'hubeau-observations',
-  store: 'memory',
+  store: 'fs',
   options: {
     workersLimit: 2,
     faultTolerant: true,
-    timeout: 55 * 60 * 1000
+    timeout: timeout
   },
   taskTemplate: {
     id: 'hubeau/observations/<%= taskId %>',
@@ -49,10 +48,19 @@ module.exports = {
   hooks: {
     tasks: {
       before: {
-        readMongoCollection: {
+        readMostRecentH: {
+          hook: 'readMongoCollection',
           collection: 'hubeau-observations',
-          dataPath: 'data.mostRecentObservations',
-          query: { 'properties.code_station': '<%= code_station %>', 'properties.<%= serie %>': { $exists: true } },
+          dataPath: 'data.mostRecentH',
+          query: { 'properties.code_station': '<%= code_station %>', 'properties.H': { $exists: true } },
+          sort: { time: -1 },
+          limit: 1
+        },
+        readMostRecentQ: {
+          hook: 'readMongoCollection',
+          collection: 'hubeau-observations',
+          dataPath: 'data.mostRecentQ',
+          query: { 'properties.code_station': '<%= code_station %>', 'properties.Q': { $exists: true } },
           sort: { time: -1 },
           limit: 1
         }
@@ -67,17 +75,15 @@ module.exports = {
         apply: {
           function: (item) => {
             let features = []
-            let lastTime = item.initialTime
-            if (item.mostRecentObservations.length === 1) {
-              lastTime = item.mostRecentObservations[0].time.getTime()
-            }
+            let lastQ = item.mostRecentQ.length === 1 ? item.mostRecentQ[0].time.getTime() : item.initialTime
+            let lastH = item.mostRecentH.length === 1 ? item.mostRecentH[0].time.getTime() : item.initialTime
             _.forEach(item.data.data, (obs) => {
-              let timeObsUTC= new Date(obs.date_obs).getTime()
-              if (timeObsUTC > lastTime) {
+              let timeObs= new Date(obs.date_obs).getTime()
+              if (((obs.grandeur_hydro === 'Q') && (timeObs > lastQ)) || ((obs.grandeur_hydro === 'H') && (timeObs > lastH))) {
                 const station_feature = _.find(stations, (station) => { return station.properties.code_station === item.code_station })
                 let observation_feature = { 		  
                   type: 'Feature',
-                  time: timeObsUTC,
+                  time: timeObs,
                   geometry: {
                     type: 'Point',
                     coordinates: [obs.longitude, obs.latitude]
@@ -121,7 +127,7 @@ module.exports = {
           clientPath: 'taskTemplate.client',
           collection: 'hubeau-observations',
           indices: [ 
-            [{ time: 1 }, { expireAfterSeconds: config.expirationPeriod }], // days in s
+            [{ time: 1 }, { expireAfterSeconds: ttl }], // days in s
             { 'properties.code_station': 1 },
             [{ 'properties.code_station': 1, time: -1 }, { background: true }],
             [{ 'properties.code_station': 1, 'properties.H': 1, time: -1 }, { background: true }],
@@ -138,8 +144,7 @@ module.exports = {
         },
         generateTasks: {
           baseUrl: 'https://hubeau.eaufrance.fr/api/v1/hydrometrie/observations_tr?',
-          series:  ["H", "Q"],
-          initialTime: Date.now() - (1 * 12 * 60 * 60 * 1000)  // days in ms
+          initialTime: Date.now() - history
         }
       },
       after: {
@@ -147,7 +152,13 @@ module.exports = {
           clientPath: 'taskTemplate.client'
         },
         removeStores: ['memory', 'fs']
-      }
+      },
+      error: {
+        disconnectMongo: {
+          clientPath: 'taskTemplate.client'
+        },
+        removeStores: ['memory', 'fs']
+    }
     }
   }
 }
