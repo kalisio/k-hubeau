@@ -10,12 +10,19 @@ A [Krawler](https://kalisio.github.io/krawler/) based service to download data f
 
 ## Configuration
 
-The job configuration can be overriden using the following environment variables:
+### Stations
 
 | Variable | Description |
 |--- | --- |
-| `OBSERVATIONS_TTL` | The observations data time to live. It must be expressed in seconds and the default value is `604 800` (7 days) | 
-| `OBSERVATIONS_HISTORY` | The duration of the observations data history the job has to download. It must be expressed in milliseconds and the default value is `86 400 000` (1 day) | 
+| `DB_URL` | The database URL. The default value is `mongodb://127.0.0.1:27017/hubeau` |
+
+### Observations
+
+| Variable | Description |
+|--- | --- |
+| `DB_URL` | The database URL. The default value is `mongodb://127.0.0.1:27017/hubeau` |
+| `TTL` | The observations data time to live. It must be expressed in seconds and the default value is `604 800` (7 days) | 
+| `HISTORY` | The duration of the observations data history the job has to download. It must be expressed in milliseconds and the default value is `86 400 000` (1 day) | 
 | `TIMEOUT` | The maximum duration of the job. It must be in milliseconds and the default value is `1 800 000` (30 minutes). |
 
 ## Deployment
