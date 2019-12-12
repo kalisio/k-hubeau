@@ -9,8 +9,8 @@ A [Krawler](https://kalisio.github.io/krawler/) based service to download data f
 
 The **k-hubeau** jobs allow to scrape hydrometric data from the following api: [http://hubeau.eaufrance.fr/page/api-hydrometrie](http://hubeau.eaufrance.fr/page/api-hydrometrie).  The downloaded data are stored in a [MongoDB](https://www.mongodb.com/) database and more precisely in 2 collections:
 * the `observations` collection stores the observed data:
-  ** the water level `H` in meter (m)
-  ** the water flow `Q` in cubic meter per second (m3/s)
+  * the water level `H` in meter (m)
+  * the water flow `Q` in cubic meter per second (m3/s)
 * the `stations` collection stores the data of the stations
   
 The project consists in 2 jobs:
