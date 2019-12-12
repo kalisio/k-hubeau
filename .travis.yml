@@ -25,7 +25,7 @@ script:
      KRAWLER_TAG=latest
    else
      IMAGE_TAG=$(node -p -e "require('./package.json').version")
-     KRAWLER_TAG=v$(node -p -e "require('./package.json').peerDependencies['@kalisio/krawler']")
+     KRAWLER_TAG=$(node -p -e "require('./package.json').peerDependencies['@kalisio/krawler']")
    fi
    docker build --build-arg KRAWLER_TAG=$KRAWLER_TAG -f dockerfile."$JOB" -t $IMAGE_NAME:"$JOB"-$IMAGE_TAG .
 

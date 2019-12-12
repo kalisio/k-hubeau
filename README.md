@@ -1,12 +1,21 @@
 # k-hubeau
 
+[![Latest Release](https://img.shields.io/github/v/tag/kalisio/k-hubeau?sort=semver&label=latest)](https://github.com/kalisio/k-hubeau/releases)
 [![Build Status](https://travis-ci.org/kalisio/k-hubeau.png?branch=master)](https://travis-ci.org/kalisio/k-hubeau)
 
 A [Krawler](https://kalisio.github.io/krawler/) based service to download data from French open portal [Hub'Eau](https://hubeau.eaufrance.fr/)
 
-## Getting started
+## Description
 
-
+The **k-hubeau** jobs allow to scrape hydrometric data from the following api: [http://hubeau.eaufrance.fr/page/api-hydrometrie](http://hubeau.eaufrance.fr/page/api-hydrometrie).  The downloaded data are stored in a [MongoDB](https://www.mongodb.com/) database and more precisely in 2 collections:
+* the `observations` collection stores the observed data:
+  ** the water level `H` in meter 'm)
+  ** the water flow `Q` in cubic meter per second (m3/s)
+* the `stations` collection stores the data of the stations
+* 
+The project consists in 2 jobs:
+* the `stations` job scrapes the stations data one a day (at midnight)
+* the `observations` job scrapes the observations for each stations every hours
 
 ## Configuration
 
@@ -15,6 +24,7 @@ A [Krawler](https://kalisio.github.io/krawler/) based service to download data f
 | Variable | Description |
 |--- | --- |
 | `DB_URL` | The database URL. The default value is `mongodb://127.0.0.1:27017/hubeau` |
+| `DEBUG` | Enables debug output. Set it to `krawler*` to enable full output. By default it is undefined. |
 
 ### Observations
 
@@ -24,18 +34,15 @@ A [Krawler](https://kalisio.github.io/krawler/) based service to download data f
 | `TTL` | The observations data time to live. It must be expressed in seconds and the default value is `604 800` (7 days) | 
 | `HISTORY` | The duration of the observations data history the job has to download. It must be expressed in milliseconds and the default value is `86 400 000` (1 day) | 
 | `TIMEOUT` | The maximum duration of the job. It must be in milliseconds and the default value is `1 800 000` (30 minutes). |
+| `DEBUG` | Enables debug output. Set it to `krawler*` to enable full output. By default it is undefined. |
 
 ## Deployment
 
--TODO-
+We personally use [Kargo](https://kalisio.github.io/kargo/) to deploy the service.
 
 ## Contributing
 
-Please read CONTRIBUTING.md for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](https://semver.org/) for versioning. For the versions available, see the tags on this repository.
+Please refer to [contribution section](./CONTRIBUTING.md) for more details.
 
 ## Authors
 
