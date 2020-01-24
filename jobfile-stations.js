@@ -29,18 +29,20 @@ module.exports = {
                 if (feature.properties.en_service === true) {
                   let station = _.cloneDeep(feature)
                   _.set(station, 'properties.name', name)
+                  _.set(station, 'properties.code_station', 'CODE_' + feature.properties.code_station)
                   stations.push(station)
                 } else console.log('warning: station ' + name + ' is inactive' )
               })
             }
+            console.log('Found ' + stations.length + ' active stations')
             item.data = stations
           }
         },
-        deleteMongoCollection: {
-          collection: 'hubeau-stations'
-        },
-        writeMongoCollection: {
-          collection: 'hubeau-stations'
+        updateMongoCollection: {
+          collection: 'hubeau-stations',
+          filter: { 'properties.code_station': '<%= properties.code_station %>' },
+          upsert : true,
+          chunkSize: 256
         },
         clearData: {}
       }
@@ -64,7 +66,7 @@ module.exports = {
           clientPath: 'taskTemplate.client',
           collection: 'hubeau-stations',
           indices: [
-            { 'properties.code_station': 1 }, 
+            [{ 'properties.code_station': 1 }, { unique: true }], 
             { geometry: '2dsphere' }
           ]
         }
