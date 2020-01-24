@@ -20,9 +20,9 @@ let generateTasks = (options) => {
       let task = {
         id: station.properties.code_station,
         initialTime: options.initialTime,
-        code_station: station.properties.code_station,
+        codeStation: station.properties.code_station,
         options: {
-          url: options.baseUrl + 'code_entite=' + station.properties.code_station + '&date_debut_obs=' + initialDate + '&size=10000'
+          url: options.baseUrl + 'code_entite=' + station.properties.code_station.substring(1) + '&date_debut_obs=' + initialDate + '&fields=date_obs,resultat_obs,grandeur_hydro&size=10000'
         }
       }
       tasks.push(task)
@@ -52,7 +52,7 @@ module.exports = {
           hook: 'readMongoCollection',
           collection: 'hubeau-observations',
           dataPath: 'data.mostRecentH',
-          query: { 'properties.code_station': '<%= code_station %>', 'properties.H': { $exists: true } },
+          query: { 'properties.code_station': '<%= codeStation %>', 'properties.H': { $exists: true } },
           sort: { time: -1 },
           limit: 1
         },
@@ -60,7 +60,7 @@ module.exports = {
           hook: 'readMongoCollection',
           collection: 'hubeau-observations',
           dataPath: 'data.mostRecentQ',
-          query: { 'properties.code_station': '<%= code_station %>', 'properties.Q': { $exists: true } },
+          query: { 'properties.code_station': '<%= codeStation %>', 'properties.Q': { $exists: true } },
           sort: { time: -1 },
           limit: 1
         }
@@ -80,23 +80,24 @@ module.exports = {
             _.forEach(item.data.data, (obs) => {
               let timeObs= new Date(obs.date_obs).getTime()
               if (((obs.grandeur_hydro === 'Q') && (timeObs > lastQ)) || ((obs.grandeur_hydro === 'H') && (timeObs > lastH))) {
-                const station_feature = _.find(stations, (station) => { return station.properties.code_station === item.code_station })
+                const station_feature = _.find(stations, (station) => { return station.properties.code_station === item.codeStation })
                 let observation_feature = { 		  
                   type: 'Feature',
                   time: timeObs,
                   geometry: {
                     type: 'Point',
-                    coordinates: [obs.longitude, obs.latitude]
+                    coordinates: station_feature.geometry.coordinates
                   },
                   properties: {
                     name: station_feature.properties.libelle_station,
-                    code_station: obs.code_station,
+                    code_station: item.codeStation,
                     [obs.grandeur_hydro]: obs.resultat_obs / 1000
                   }
                 }
                 features.push(observation_feature)
               }
             })
+            if (features.length > 0) console.log('Found ' + features.length + ' new observations for station ' + item.codeStation)
             item.data = features
           }
         },

@@ -29,7 +29,7 @@ module.exports = {
                 if (feature.properties.en_service === true) {
                   let station = _.cloneDeep(feature)
                   _.set(station, 'properties.name', name)
-                  _.set(station, 'properties.code_station', 'CODE_' + feature.properties.code_station)
+                  _.set(station, 'properties.code_station', '#' + feature.properties.code_station)  // prefix the code to disable automatic data conversion
                   stations.push(station)
                 } else console.log('warning: station ' + name + ' is inactive' )
               })
