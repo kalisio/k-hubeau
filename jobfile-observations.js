@@ -97,7 +97,7 @@ module.exports = {
                 features.push(observation_feature)
               }
             })
-            if (features.length > 0) console.log('Found ' + features.length + ' new observations for station ' + item.codeStation)
+            if (features.length > 0) console.log('Found ' + features.length + ' new observations on station ' + item.codeStation)
             item.data = features
           }
         },
