@@ -1,3 +1,18 @@
+#### 1.0.1 (2020-01-25)
+
+##### New Features
+
+*  Increase observation scraping (close [#16](https://github.com/kalisio/k-hubeau/pull/16)) ([f4990880](https://github.com/kalisio/k-hubeau/commit/f4990880501a04387158700a446d6ca784058f4b))
+
+##### Bug Fixes
+
+*  MongoAtlas raises some alerts (close [#17](https://github.com/kalisio/k-hubeau/pull/17)) ([ad17494e](https://github.com/kalisio/k-hubeau/commit/ad17494eae75e687fc3584cf151b60552403d692))
+*  The index code_station should be unique in the station collection (close [#15](https://github.com/kalisio/k-hubeau/pull/15)) ([1fdbcbf0](https://github.com/kalisio/k-hubeau/commit/1fdbcbf0851aed6b3134b985f46e8d0fe0796ced))
+
+##### Other Changes
+
+*  MongoAtlas raises some alertes [#17](https://github.com/kalisio/k-hubeau/pull/17) ([04b4950e](https://github.com/kalisio/k-hubeau/commit/04b4950eb4bae0795d5c4b6c3c520eadcccd10f0))
+
 ## 1.0.0 (2019-12-12)
 
 ##### New Features
