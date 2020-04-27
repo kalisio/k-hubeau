@@ -4,9 +4,9 @@ const _ = require('lodash')
 
 // Configuration
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/hubeau'
-const ttl = process.env.TTL || (7 * 24 * 60 * 60)  // duration in seconds
-const history =  process.env.HISTORY || (1 * 24 * 60 * 60 * 1000) // duration in miliseconds
-const timeout = process.env.TIMEOUT || (30 * 60 * 1000) // duration in miliseconds
+const ttl = parseInt(process.env.TTL) || (60)  // duration in seconds
+const history =  parseInt(process.env.HISTORY) || (1 * 24 * 60 * 60 * 1000) // duration in miliseconds
+const timeout = parseInt(process.env.TIMEOUT) || (30 * 60 * 1000) // duration in miliseconds
 
 let stations = null
 
