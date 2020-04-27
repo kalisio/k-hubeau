@@ -8,7 +8,7 @@ FROM kalisio/krawler:${KRAWLER_TAG} AS krawler
 #
 # Make the job image using the krawler image alias
 #
-FROM node:8-buster-slim
+FROM node:12-buster-slim
 LABEL maintainer="Kalisio <contact@kalisio.xyz>"
 
 # Copy Krawler from the Krawler image alias
