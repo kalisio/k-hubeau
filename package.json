@@ -36,6 +36,6 @@
     "generate-changelog": "^1.8.0"
   },
   "peerDependencies": {
-    "@kalisio/krawler": "1.0.0"
+    "@kalisio/krawler": "1.1.0"
   }
 }
