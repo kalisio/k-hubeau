@@ -1,3 +1,13 @@
+### 1.1.0 (2020-04-29)
+
+##### New Features
+
+*  Upgrade to Node 12 (close [#19](https://github.com/kalisio/k-hubeau/pull/19)) ([8965fff8](https://github.com/kalisio/k-hubeau/commit/8965fff8fe5f0b948247e45a4381eec3181e8453))
+
+##### Bug Fixes
+
+*  Observation data are getting too huge (close [#18](https://github.com/kalisio/k-hubeau/pull/18)) [skip ci] ([ee986846](https://github.com/kalisio/k-hubeau/commit/ee98684603cc2538eebb785be80ea62372c82a49))
+
 #### 1.0.1 (2020-01-25)
 
 ##### New Features
