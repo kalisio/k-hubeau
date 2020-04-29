@@ -6,7 +6,7 @@
 
 ##### Bug Fixes
 
-*  Observation data are getting too huge (close [#18](https://github.com/kalisio/k-hubeau/pull/18)) [skip ci] ([ee986846](https://github.com/kalisio/k-hubeau/commit/ee98684603cc2538eebb785be80ea62372c82a49))
+*  Observation data are getting too huge (close [#18](https://github.com/kalisio/k-hubeau/pull/18)) ([ee986846](https://github.com/kalisio/k-hubeau/commit/ee98684603cc2538eebb785be80ea62372c82a49))
 
 #### 1.0.1 (2020-01-25)
 
