@@ -11,7 +11,7 @@ FROM kalisio/krawler:${KRAWLER_TAG} AS krawler
 FROM node:12-buster-slim
 LABEL maintainer="Kalisio <contact@kalisio.xyz>"
 
-ENV CRON="0 5,20,35,50 * * * *"
+ENV CRON="0 */15 * * * *"
 
 # Copy Krawler from the Krawler image alias
 COPY --from=krawler /opt/krawler /opt/krawler
