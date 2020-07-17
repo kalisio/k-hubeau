@@ -14,8 +14,8 @@ The **k-hubeau** jobs allow to scrape hydrometric data from the following api: [
 * the `stations` collection stores the data of the stations
   
 The project consists in 2 jobs:
-* the `stations` job scrapes the stations data one a day (at midnight)
-* the `observations` job scrapes the observations for each stations every hours
+* the `stations` job scrapes the stations data according a specific cron expression. By default, every day at midnight.
+* the `observations` job scrapes the observations according a specific cron expression. By default every 15 minutes.
 
 ## Configuration
 
