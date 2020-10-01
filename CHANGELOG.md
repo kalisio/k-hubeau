@@ -1,3 +1,9 @@
+### 1.2.0 (2020-10-01)
+
+##### New Features
+
+*  Allow to configure the cron expression (close [#20](https://github.com/kalisio/k-hubeau/pull/20)) ([0494c328](https://github.com/kalisio/k-hubeau/commit/0494c32829e3135e8b4de1d0af98c817ab543f85))
+
 ### 1.1.0 (2020-04-29)
 
 ##### New Features
