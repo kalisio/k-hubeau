@@ -1,7 +1,7 @@
 # k-hubeau
 
 [![Latest Release](https://img.shields.io/github/v/tag/kalisio/k-hubeau?sort=semver&label=latest)](https://github.com/kalisio/k-hubeau/releases)
-[![Build Status](https://travis-ci.org/kalisio/k-hubeau.png?branch=master)](https://travis-ci.org/kalisio/k-hubeau)
+[![Build Status](https://travis-ci.com/kalisio/k-hubeau.png?branch=master)](https://travis-ci.org/kalisio/k-hubeau)
 
 A [Krawler](https://kalisio.github.io/krawler/) based service to download data from French open portal [Hub'Eau](https://hubeau.eaufrance.fr/)
 
@@ -52,7 +52,7 @@ This project is sponsored by
 
 ## License
 
-This project is licensed under the MIT License - see the [license file](./LICENCE) for details
+This project is licensed under the MIT License - see the [license file](./LICENSE) for details
 
 
 
