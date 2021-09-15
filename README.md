@@ -1,7 +1,7 @@
 # k-hubeau
 
 [![Latest Release](https://img.shields.io/github/v/tag/kalisio/k-hubeau?sort=semver&label=latest)](https://github.com/kalisio/k-hubeau/releases)
-[![Build Status](https://travis-ci.com/kalisio/k-hubeau.png?branch=master)](https://travis-ci.com/kalisio/k-hubeau)
+[![Build Status](https://app.travis-ci.com/kalisio/k-hubeau.svg?branch=master)](https://app.travis-ci.com/kalisio/k-hubeau)
 
 A [Krawler](https://kalisio.github.io/krawler/) based service to download data from French open portal [Hub'Eau](https://hubeau.eaufrance.fr/)
 
