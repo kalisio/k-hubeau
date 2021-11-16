@@ -5,7 +5,7 @@ const _ = require('lodash')
 
 // Configuration
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/kano'
-const baseUrl = process.env.PREDICT_URL || 'http://localhost:5000/predict'
+const baseUrl = process.env.PREDIKT_URL || 'http://localhost:5000/predict'
 const ttl = parseInt(process.env.TTL) || (7 * 24 * 60 * 60)  // duration in seconds
 const timeout = parseInt(process.env.TIMEOUT) || (30 * 60 * 1000) // duration in miliseconds
 const collection = 'hubeau-observations'
