@@ -1,15 +1,21 @@
 const krawler = require('@kalisio/krawler')
 const hooks = krawler.hooks
 const moment = require('moment')
+const fs = require('fs')
+const path = require('path')
 const _ = require('lodash')
 
 // Configuration
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/kano'
 const baseUrl = process.env.PREDIKT_URL || 'http://localhost:5000/predict'
+const modelsPath = process.env.MODELS_PATH || path.join('..', 'predikt', 'models', 'output', 'water_level_rnn', 'multiple', '12H')
 const ttl = parseInt(process.env.TTL) || (7 * 24 * 60 * 60)  // duration in seconds
 const timeout = parseInt(process.env.TIMEOUT) || (30 * 60 * 1000) // duration in miliseconds
 const collection = 'hubeau-observations'
-const models = ['Y1422030', 'Y1232010']
+// Read available models
+const models = fs.readdirSync(modelsPath)
+  .filter(model => model.endsWith('.json'))
+  .map(model => path.basename(model, '.json'))
 
 // Create a custom hook to generate tasks
 let generateTasks = (options) => {
