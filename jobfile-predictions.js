@@ -11,6 +11,7 @@ const baseUrl = process.env.PREDIKT_URL || 'http://localhost:5000/predict'
 const modelsPath = process.env.PREDIKT_MODELS_PATH || path.join('..', 'predikt', 'models', 'output', 'water_level_rnn', 'multiple', '12H')
 const ttl = parseInt(process.env.TTL) || (7 * 24 * 60 * 60)  // duration in seconds
 const timeout = parseInt(process.env.TIMEOUT) || (30 * 60 * 1000) // duration in miliseconds
+const variable = process.env.VARIABLE || 'HP' 
 const collection = 'hubeau-observations'
 // Read available models
 const models = fs.readdirSync(modelsPath)
@@ -69,7 +70,7 @@ module.exports = {
               // Use prediction feature as a template
               let feature = _.pick(predictionFeature, ['type', 'geometry', 'runTime', 'properties.code_station'])
               _.set(feature, 'time', time)
-              _.set(feature, 'properties.HP', values[index])
+              _.set(feature, `properties.${variable}`, values[index])
               features.push(feature)
             })
             if (features.length > 0) console.log('Found ' + features.length + ' new predictions on station ' + _.get(predictionFeature, 'properties.code_station'))
