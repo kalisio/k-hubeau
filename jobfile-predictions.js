@@ -8,7 +8,7 @@ const _ = require('lodash')
 // Configuration
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/kano'
 const baseUrl = process.env.PREDIKT_URL || 'http://localhost:5000/predict'
-const modelsPath = process.env.PREDIKT_MODELS_PATH || path.join('..', 'predikt', 'models', 'output', 'water_level_rnn', 'multiple', '12H')
+const modelsPath = process.env.PREDIKT_MODELS_PATH || path.join('..', 'predikt', 'models', 'output', 'water_level_rnn', 'multiple', '24H')
 const ttl = parseInt(process.env.TTL) || (7 * 24 * 60 * 60)  // duration in seconds
 const timeout = parseInt(process.env.TIMEOUT) || (30 * 60 * 1000) // duration in miliseconds
 const variable = process.env.VARIABLE || 'HP' 
@@ -23,7 +23,7 @@ let generateTasks = (options) => {
   return (hook) => {
     let tasks = []
     models.forEach(model => {
-      const code_station = `#${model}01`
+      const code_station = `#${model}`
       tasks.push({
         id: code_station,
         options: {
