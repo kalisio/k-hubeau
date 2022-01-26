@@ -16,8 +16,7 @@ const variable = process.env.VARIABLE || 'HP'
 const collection = 'hubeau-observations'
 // Read available models
 const models = fs.readdirSync(modelsPath)
-  .filter(model => model.endsWith('.json'))
-  .map(model => path.basename(model, '.json'))
+  .filter(model => fs.lstatSync(path.join(modelsPath, model)).isDirectory())
 
 // Create a custom hook to generate tasks
 let generateTasks = (options) => {
