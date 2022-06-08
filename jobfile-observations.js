@@ -1,6 +1,10 @@
-const krawler = require('@kalisio/krawler')
-const hooks = krawler.hooks
-const _ = require('lodash')
+import _ from 'lodash'
+import { hooks } from '@kalisio/krawler'
+import { fileURLToPath } from 'url'
+import { dirname } from 'path'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 // Configuration
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/hubeau'
@@ -33,7 +37,7 @@ let generateTasks = (options) => {
 }
 hooks.registerHook('generateTasks', generateTasks)
 
-module.exports = {
+export default {
   id: 'hubeau-observations',
   store: 'fs',
   options: {
