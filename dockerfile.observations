@@ -11,18 +11,20 @@ FROM kalisio/krawler:${KRAWLER_TAG} AS krawler
 FROM node:16-buster-slim
 LABEL maintainer="Kalisio <contact@kalisio.xyz>"
 
+# Default environment variables
 ENV CRON="0 */15 * * * *"
 
 # Copy Krawler from the Krawler image alias
 COPY --from=krawler /opt/krawler /opt/krawler
 WORKDIR /opt/krawler
-RUN yarn link && yarn link @kalisio/krawler
-
+RUN yarn link 
 # Required as yarn does not seem to set it correctly
 RUN chmod u+x /usr/local/bin/krawler
 
 # Install the job
-COPY jobfile-observations.js .
+COPY jobfile-observations.js package.json yarn.lock /opt/job/
+WORKDIR /opt/job
+RUN yarn && yarn link @kalisio/krawler
 
 # Add default healthcheck
 HEALTHCHECK --interval=1m --timeout=10s --start-period=1m CMD node /opt/krawler/healthcheck.js
