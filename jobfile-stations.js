@@ -1,21 +1,16 @@
 import _ from 'lodash'
-import { fileURLToPath } from 'url'
-import { dirname } from 'path'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
 
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/hubeau'
 
 export default {
   id: 'hubeau-stations',
-  store: 'fs',
+  store: 'memory',
   options: {
     workersLimit: 1,
     faultTolerant: true,
   },
   tasks: [{
-    id: 'hubeau/stations',
+    id: 'stations',
     type: 'http',
     options: {
       url: 'https://hubeau.eaufrance.fr/api/v1/hydrometrie/referentiel/stations?format=geojson&size=10000'
@@ -54,14 +49,7 @@ export default {
     },
     jobs: {
       before: {
-        createStores: [{
-          id: 'memory'
-        }, {
-          id: 'fs',
-          options: {
-            path: __dirname
-          }
-        }],
+        createStores: { id: 'memory' },
         connectMongo: {
           url: dbUrl,
           // Required so that client is forwarded from job to tasks
@@ -80,13 +68,13 @@ export default {
         disconnectMongo: {
           clientPath: 'taskTemplate.client'
         },
-        removeStores: ['memory', 'fs']
+        removeStores: [ 'memory' ]
       },
       error: {
         disconnectMongo: {
           clientPath: 'taskTemplate.client'
         },
-        removeStores: ['memory', 'fs']
+        removeStores: [ 'memory' ]
       }
     }
   }

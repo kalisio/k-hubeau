@@ -4,8 +4,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import { hooks } from '@kalisio/krawler'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+const outputDir = './output'
 
 // Configuration
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/kano'
@@ -48,7 +47,7 @@ export default {
     timeout: timeout
   },
   taskTemplate: {
-    id: 'hubeau/predictions/<%= taskId %>',
+    id: 'predictions/<%= taskId %>',
     type: 'http'
   },
   hooks: {
@@ -94,7 +93,7 @@ export default {
         }, {
           id: 'fs',
           options: {
-            path: __dirname
+            path: outputDir
           }
         }],
         connectMongo: {

@@ -11,5 +11,5 @@ yarn-error.log*
 # Node modules
 node_modules
 
-# local data
-hubeau
+# Output data
+output
