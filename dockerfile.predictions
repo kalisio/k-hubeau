@@ -22,7 +22,7 @@ RUN yarn link
 RUN chmod u+x /usr/local/bin/krawler
 
 # Install the job
-COPY jobfile-predictions.js ackage.json yarn.lock /opt/job/
+COPY jobfile-predictions.js package.json yarn.lock /opt/job/
 WORKDIR /opt/job
 RUN yarn && yarn link @kalisio/krawler
 
@@ -30,4 +30,4 @@ RUN yarn && yarn link @kalisio/krawler
 HEALTHCHECK --interval=1m --timeout=10s --start-period=1m CMD node /opt/krawler/healthcheck.js
 
 # Run the job
-CMD krawler --run --cron "$CRON" jobfile-predictions.js
+CMD krawler --cron "$CRON" jobfile-predictions.js
