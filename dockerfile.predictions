@@ -18,4 +18,4 @@ RUN yarn && yarn link @kalisio/krawler && yarn clear cache
 HEALTHCHECK --interval=1m --timeout=10s --start-period=1m CMD node /opt/krawler/healthcheck.js
 
 # Run the job
-CMD $KRAWLER_BIN --cron "$CRON" jobfile-predictions.js
+CMD krawler --cron "$CRON" jobfile-predictions.js
