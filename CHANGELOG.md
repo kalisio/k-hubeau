@@ -1,3 +1,5 @@
+Please refer to GitHub issues for changelog starting from v1.4: https://github.com/kalisio/k-hubeau/issues.
+
 ### 1.3.0 (2023-03-09)
 
 ##### New Features

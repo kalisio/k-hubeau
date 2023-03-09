@@ -26,17 +26,15 @@
   },
   "scripts": {
     "test": "echo \"Warning: no test specified\"",
-    "changelog": "changelog -x build,ci,chore,docs,other,perf,refactor,revert,style,test",
-    "release:major": "npm run changelog -- -M && git add CHANGELOG.md && git commit -m \"chore: updated CHANGELOG.md [skip ci]\" && git push && npm version --force major",
-    "release:minor": "npm run changelog -- -m && git add CHANGELOG.md && git commit -m \"chore: Updated CHANGELOG.md [skip ci]\" && git push && npm version --force minor",
-    "release:patch": "npm run changelog -- -p && git add CHANGELOG.md && git commit -m \"chore: Updated CHANGELOG.md [skip ci]\" && git push && npm version --force patch",
-    "postversion": "git push origin --tags"
+    "release:major": "npm version --force major",
+    "release:minor": "npm version --force minor",
+    "release:patch": "npm version --force patch",
+    "postversion": "git push origin HEAD --tags"
   },
   "dependencies": {
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "generate-changelog": "^1.8.0"
   },
   "peerDependencies": {
     "@kalisio/krawler": "2.0.0"
