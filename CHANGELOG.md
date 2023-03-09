@@ -1,3 +1,25 @@
+### 1.3.0 (2023-03-09)
+
+##### New Features
+
+*  Upgrade NodeJS to v16 and krawler to latest version (closes [#23](https://github.com/kalisio/k-hubeau/pull/23)) ([ede1255d](https://github.com/kalisio/k-hubeau/commit/ede1255d77d4cf04addd7928aa90f54f543f0a17))
+*  Integrated predictions based on machine learning models (closes [#22](https://github.com/kalisio/k-hubeau/pull/22)) ([77c5978a](https://github.com/kalisio/k-hubeau/commit/77c5978a4c27d7d59e003aa6d9db984426396933))
+
+##### Bug Fixes
+
+*  dockerfiles ([e31f3d03](https://github.com/kalisio/k-hubeau/commit/e31f3d03a2f06892e26b9c00c4cd3e5257533731))
+
+##### Other Changes
+
+*  Upgrade NodeJS to v16 and krawler to latest version [#23](https://github.com/kalisio/k-hubeau/pull/23) ([d7e2c19d](https://github.com/kalisio/k-hubeau/commit/d7e2c19d2f823414bb3d54bf39e00c1176cc49c3))
+*  Integrate predictions based on machine learning models - updated predictions job to use variable ([#22](https://github.com/kalisio/k-hubeau/pull/22)) ([7f2fd988](https://github.com/kalisio/k-hubeau/commit/7f2fd988a01fb25e43b82e18ed832210227d7c11))
+*  Integrate predictions based on machine learning models - updated predictions job to use models path  ([#22](https://github.com/kalisio/k-hubeau/pull/22)) ([a724d550](https://github.com/kalisio/k-hubeau/commit/a724d55036d1c1a80af29bbba1229b00c01fdb78))
+*  Integrate predictions based on machine learning models - updated predictions job to use models path  ([#22](https://github.com/kalisio/k-hubeau/pull/22)) ([e70fe253](https://github.com/kalisio/k-hubeau/commit/e70fe25372829617d65b703dfa18cebf97475a20))
+*  Integrate predictions based on machine learning models - added predictions job image ([#22](https://github.com/kalisio/k-hubeau/pull/22)) ([a048a938](https://github.com/kalisio/k-hubeau/commit/a048a9382b89b8cfaaedabb503cd8c2ee23e2471))
+*  Integrate predictions based on machine learning models ([#22](https://github.com/kalisio/k-hubeau/pull/22)) ([b27dbc48](https://github.com/kalisio/k-hubeau/commit/b27dbc48e411116a9e81249f13bdbf009cb227c3))
+*  fixed build badge ([ee002345](https://github.com/kalisio/k-hubeau/commit/ee002345121ace13572626383a454c55af142a3d))
+*  update npm release script ([5c7c4d73](https://github.com/kalisio/k-hubeau/commit/5c7c4d73708a7f9d532ac614f8343efb44663612))
+
 ### 1.2.0 (2020-10-01)
 
 ##### New Features
