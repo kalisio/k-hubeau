@@ -10,7 +10,7 @@ LABEL maintainer="Kalisio <contact@kalisio.xyz>"
 ENV CRON="0 0 * * * *"
 
 # Install the job
-COPY --chown=node:node jobfile-predictions.js package.json yarn.lock /opt/job/
+COPY --chown=node:node jobfile-hydro-predictions.js package.json yarn.lock /opt/job/
 WORKDIR /opt/job
 RUN yarn && yarn link @kalisio/krawler && yarn cache clean
 
