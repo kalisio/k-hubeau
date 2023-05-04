@@ -7,13 +7,12 @@ A [Krawler](https://kalisio.github.io/krawler/) based service to download data f
 
 ## K-hubeau-hydro
 
-The **k-hubeau-hydro** jobs allow to scrape hydrometric data from the following api: [http://hubeau.eaufrance.fr/page/api-hydrometrie](http://hubeau.eaufrance.fr/page/api-hydrometrie).  The downloaded data are stored in a [MongoDB](https://www.mongodb.com/) database and more precisely in 3 collections:
+The **k-hubeau-hydro** jobs allow to scrape hydrometric data from the following api: [http://hubeau.eaufrance.fr/page/api-hydrometrie](http://hubeau.eaufrance.fr/page/api-hydrometrie).  The downloaded data are stored in a [MongoDB](https://www.mongodb.com/) database and more precisely in 2 collections:
 * the `observations` collection stores the observed data:
   * the water level `H` in meter (m)
   * the water flow `Q` in cubic meter per second (m3/s)
 * the `stations` collection stores the data of the stations
-* the `predictions` collection stores the predicted data:
-  * the water level `H` in meter (m)
+
   
 The project consists in 3 jobs:
 * the `stations` job scrapes the stations data according a specific cron expression. By default, every day at midnight.
@@ -45,7 +44,8 @@ The **k-hubeau-piezo** jobs allow to scrape piezometric data from the following 
   * the water table level `profondeur_nappe` in meter (m)
   * the water table level in ngf format `niveau_eau_ngf` in meter (m)
 
-* the `stations` collection stores the data of the stations
+* the `stations` collection stores the data of the stations 
+  * the field `DATE_FIN_MESURE` is used to define older stations as inactive (`is_active: false`) and should not be requested by the observations job.
 
 The project consists in 2 jobs:
 * the `stations` job scrapes the stations data according a specific cron expression. By default, every day at midnight.
