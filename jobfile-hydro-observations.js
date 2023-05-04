@@ -111,7 +111,7 @@ hooks.registerHook('processData', processData)
 hooks.registerHook('generateTasks', generateTasks)
 
 export default {
-  id: 'hubeau-observations',
+  id: 'hubeau-hydro-observations',
   store: 'memory',
   options: {
     workersLimit: 45,
@@ -130,7 +130,7 @@ export default {
         processData: {},
         writeMongoCollection: {
           chunkSize: 256,
-          collection: 'hubeau-observations',
+          collection: 'hubeau-hydro-observations',
           transform: { unitMapping: { time: { asDate: 'utc' } } },
           dataPath: 'data.data'
         },
@@ -162,7 +162,7 @@ export default {
         },
         createMongoCollection: {
           clientPath: 'taskTemplate.client',
-          collection: 'hubeau-observations',
+          collection: 'hubeau-hydro-observations',
           indices: [ 
             [{ time: 1 }, { expireAfterSeconds: ttl }], // days in s
             { 'properties.code_station': 1 },
@@ -177,7 +177,7 @@ export default {
         getStations:{
           hook: 'readMongoCollection',
           clientPath: 'taskTemplate.client',
-          collection: 'hubeau-stations',
+          collection: 'hubeau-hydro-stations',
           dataPath: 'data.stations'
         },
         createDict:{
@@ -205,7 +205,7 @@ export default {
         lastStoredH:{
           hook: 'createMongoAggregation',
           clientPath: 'taskTemplate.client',
-          collection: 'hubeau-observations',
+          collection: 'hubeau-hydro-observations',
           dataPath: 'data.lastH',
           pipeline: [
             {
@@ -243,7 +243,7 @@ export default {
         lastStoredQ:{
           hook: 'createMongoAggregation',
           clientPath: 'taskTemplate.client',
-          collection: 'hubeau-observations',
+          collection: 'hubeau-hydro-observations',
           dataPath: 'data.lastQ',
           pipeline: [
             {$match: {'properties.Q': { $exists: true }}},

@@ -3,7 +3,7 @@ import _ from 'lodash'
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/hubeau'
 
 export default {
-  id: 'hubeau-stations',
+  id: 'hubeau-hydro-stations',
   store: 'memory',
   options: {
     workersLimit: 1,
@@ -39,7 +39,7 @@ export default {
           }
         },
         updateMongoCollection: {
-          collection: 'hubeau-stations',
+          collection: 'hubeau-hydro-stations',
           filter: { 'properties.code_station': '<%= properties.code_station %>' },
           upsert : true,
           chunkSize: 256
@@ -57,7 +57,7 @@ export default {
         },
         createMongoCollection: {
           clientPath: 'taskTemplate.client',
-          collection: 'hubeau-stations',
+          collection: 'hubeau-hydro-stations',
           indices: [
             [{ 'properties.code_station': 1 }, { unique: true }], 
             { geometry: '2dsphere' }

@@ -10,7 +10,7 @@ LABEL maintainer="Kalisio <contact@kalisio.xyz>"
 ENV CRON="0 */15 * * * *"
 
 # Install the job
-COPY --chown=node:node jobfile-observations.js package.json yarn.lock /opt/job/
+COPY --chown=node:node jobfile-hydro-observations.js package.json yarn.lock /opt/job/
 WORKDIR /opt/job
 RUN yarn && yarn link @kalisio/krawler && yarn cache clean
 
@@ -18,4 +18,4 @@ RUN yarn && yarn link @kalisio/krawler && yarn cache clean
 HEALTHCHECK --interval=1m --timeout=10s --start-period=1m CMD node /opt/krawler/healthcheck.js
 
 # Run the job
-CMD krawler --cron "$CRON" jobfile-observations.js
+CMD krawler --cron "$CRON" jobfile-hydro-observations.js
