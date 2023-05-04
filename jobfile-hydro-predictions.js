@@ -14,7 +14,7 @@ const ttl = parseInt(process.env.TTL) || (7 * 24 * 60 * 60)  // duration in seco
 const timeout = parseInt(process.env.TIMEOUT) || (30 * 60 * 1000) // duration in miliseconds
 // Now could be HP_RNN or HP_XGB depending on underlying prediction model
 const variable = process.env.VARIABLE || 'HP'
-const collection = 'hubeau-observations'
+const collection = 'hubeau-hydro-observations'
 // Read available models
 const models = fs.readdirSync(modelsPath)
   .filter(model => fs.lstatSync(path.join(modelsPath, model)).isDirectory())
@@ -39,7 +39,7 @@ let generateTasks = (options) => {
 hooks.registerHook('generateTasks', generateTasks)
 
 export default {
-  id: 'hubeau-predictions',
+  id: 'hubeau-hydro-predictions',
   store: 'fs',
   options: {
     workersLimit: 2,

@@ -13,9 +13,11 @@ notifications:
     on_failure: always
 
 env:
-  - JOB=stations
-  - JOB=observations
-  - JOB=predictions
+  - JOB=hydro-stations
+  - JOB=hydro-observations
+  - JOB=hydro-predictions
+  - JOB=piezo-stations
+  - JOB=piezo-observations
 
 before_script:
   - docker login -u="$DOCKER_USER" -p="$DOCKER_PASSWORD"
