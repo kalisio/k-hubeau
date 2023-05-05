@@ -153,8 +153,10 @@ export default {
             [{ time: 1 }, { expireAfterSeconds: ttl }], // days in s
             { 'properties.bss_id': 1 },
             [{ 'properties.bss_id': 1, time: -1 }, { background: true }],
-            [{ 'properties.bss_id': 1, 'properties.P': 1, time: -1 }, { background: true }],
-            { 'properties.P': 1 },
+            [{ 'properties.bss_id': 1, 'properties.profondeur_nappe': 1, time: -1 }, { background: true }],
+            [{ 'properties.bss_id': 1, 'properties.niveau_eau_ngf': 1, time: -1 }, { background: true }],
+            { 'properties.profondeur_nappe': 1 },
+            { 'properties.niveau_eau_ngf': 1 },
             { geometry: '2dsphere' }
           ],
         },
