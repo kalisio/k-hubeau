@@ -10,8 +10,8 @@ const outputDir = './output'
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/kano'
 const baseUrl = process.env.PREDIKT_URL || 'http://localhost:5000/predict'
 const modelsPath = process.env.PREDIKT_MODELS_PATH || path.join('..', 'predikt', 'models', 'output', 'water_level_rnn', 'multiple', '24H')
-const ttl = parseInt(process.env.TTL) || (7 * 24 * 60 * 60)  // duration in seconds
-const timeout = parseInt(process.env.TIMEOUT) || (30 * 60 * 1000) // duration in miliseconds
+const ttl = parseInt(process.env.TTL, 10) || (7 * 24 * 60 * 60)  // duration in seconds
+const timeout = parseInt(process.env.TIMEOUT, 10) || (30 * 60 * 1000) // duration in miliseconds
 // Now could be HP_RNN or HP_XGB depending on underlying prediction model
 const variable = process.env.VARIABLE || 'HP'
 const collection = 'hubeau-hydro-observations'

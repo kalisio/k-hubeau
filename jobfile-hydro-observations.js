@@ -62,7 +62,7 @@ let processData = (options) => {
     let stationsInUrl = item.options.url.split("code_entite=")[1].split("&")[0].split(",")
     if (item.data.count >20000) {
       
-      console.log('Too many results for task ' + item.id.substring(13) + ' : ' + item.data.count+ " should be less than 20000    "+ (parseInt(item.data.count)-20000) + " Observations are missing")
+      console.log('Too many results for task ' + item.id.substring(13) + ' : ' + item.data.count+ " should be less than 20000    "+ (parseInt(item.data.count, 10)-20000) + " Observations are missing")
       console.log("Request had : "+stationsInUrl.length+" stations : "+stationsInUrl) 
       _.forEach(stationsInUrl, (code_station) => {
         console.log("stations "+code_station+" had an estimation of "+dictstations["#"+code_station].est)
