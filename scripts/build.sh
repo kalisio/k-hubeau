@@ -20,7 +20,7 @@ while getopts "prv" option; do
             ;;
         r) # report outcome to slack
             load_env_files "$WORKSPACE_DIR/development/common/SLACK_WEBHOOK_JOBS.enc.env"
-            trap 'slack_ci_report "$ROOT_DIR" "$JOB_ID" "$?" "$SLACK_WEBHOOK_JOBS"' EXIT
+            trap 'slack_ci_report "$ROOT_DIR" "$JOB_ID $JOB_VARIANT" "$?" "$SLACK_WEBHOOK_JOBS"' EXIT
             ;;
         *)
             ;;
