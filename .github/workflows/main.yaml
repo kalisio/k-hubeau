@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        variant: [hydro-stations, hydro-observations, hydro-predictions, piezo-stations, piezo-observations]
+        variant: [ hydro-stations, hydro-observations, hydro-predictions, piezo-stations, piezo-observations ]
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -23,5 +23,5 @@ jobs:
       - name: Build job
         env:
           SOPS_AGE_KEY: ${{ secrets.SOPS_AGE_KEY }}
-        run: bash ./scripts/build.sh -p -r ${{ github.job }} ${{ matrix.variant }}
+        run: bash ./scripts/build.sh -p -r ${{ github.job }} ${{ matrix.variant }} -v ${{ matrix.variant }}
  
