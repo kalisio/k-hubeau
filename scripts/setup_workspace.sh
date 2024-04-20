@@ -24,6 +24,7 @@ else
             ;;
         esac
     done
+    
     shift $((OPTIND-1))
     WORKSPACE_DIR="$1"
     DEVELOPMENT_REPO_URL="$GITHUB_URL/kalisio/development.git"
