@@ -18,10 +18,9 @@ jobs:
         run: bash ./scripts/init_runner.sh ${{ github.job }}
       - name: Setup workspace
         env:
-          GITHUB_DEVELOPMENT_PAT: ${{ secrets.GH_DEVELOPMENT_PAT }}
+          GITHUB_DEVELOPMENT_TOKEN: ${{ secrets.GH_DEVELOPMENT_TOKEN }}
         run: bash ./scripts/setup_workspace.sh
       - name: Build job
         env:
           SOPS_AGE_KEY: ${{ secrets.SOPS_AGE_KEY }}
         run: bash ./scripts/build.sh -p -r ${{ github.job }} -v ${{ matrix.variant }}
- 

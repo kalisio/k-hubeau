@@ -12,7 +12,7 @@ THIS_DIR=$(dirname "$THIS_FILE")
 ### Github Actions
 
 init_github_build() {
-    install_reqs age sops nvm node16
+    install_reqs age sops
 }
 
 begin_group "Init $CI_ID for $JOB_ID"
