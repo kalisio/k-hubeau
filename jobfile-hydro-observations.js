@@ -339,7 +339,7 @@ export default {
           }
         },
         generateTasks: {
-          baseUrl: 'https://hubeau.eaufrance.fr/api/v1/hydrometrie/observations_tr?',
+          baseUrl: 'https://hubeau.eaufrance.fr/api/v2/hydrometrie/observations_tr?',
         },
       },
       after: {

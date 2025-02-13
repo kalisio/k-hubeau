@@ -13,7 +13,7 @@ export default {
     id: 'stations',
     type: 'http',
     options: {
-      url: 'https://hubeau.eaufrance.fr/api/v1/hydrometrie/referentiel/stations?format=geojson&size=10000'
+      url: 'https://hubeau.eaufrance.fr/api/v2/hydrometrie/referentiel/stations?format=geojson&size=10000'
     }
   }],
   hooks: {
