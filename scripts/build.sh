@@ -33,7 +33,7 @@ while getopts "pr:v:" option; do
     esac
 done
 
-## Init worksapce
+## Init workspace
 ##
 
 load_env_files "$WORKSPACE_DIR/development/common/kalisio_dockerhub.enc.env"
