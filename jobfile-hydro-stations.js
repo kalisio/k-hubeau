@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/hubeau'
+const DB_URL = process.env.DB_URL || 'mongodb://127.0.0.1:27017/hubeau'
 
 export default {
   id: 'hubeau-hydro-stations',
@@ -51,7 +51,7 @@ export default {
       before: {
         createStores: { id: 'memory' },
         connectMongo: {
-          url: dbUrl,
+          url: DB_URL,
           // Required so that client is forwarded from job to tasks
           clientPath: 'taskTemplate.client'
         },

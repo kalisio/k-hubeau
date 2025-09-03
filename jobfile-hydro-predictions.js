@@ -7,17 +7,17 @@ import { hooks } from '@kalisio/krawler'
 const outputDir = './output'
 
 // Configuration
-const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/kano'
-const baseUrl = process.env.PREDIKT_URL || 'http://localhost:5000/predict'
-const modelsPath = process.env.PREDIKT_MODELS_PATH || path.join('..', 'predikt', 'models', 'output', 'water_level_rnn', 'multiple', '24H')
-const ttl = parseInt(process.env.TTL, 10) || (7 * 24 * 60 * 60)  // duration in seconds
-const timeout = parseInt(process.env.TIMEOUT, 10) || (30 * 60 * 1000) // duration in miliseconds
+const DB_URL = process.env.DB_URL || 'mongodb://127.0.0.1:27017/kano'
+const BASE_URL = process.env.PREDIKT_URL || 'http://localhost:5000/predict'
+const MODELS_PATH = process.env.PREDIKT_MODELS_PATH || path.join('..', 'predikt', 'models', 'output', 'water_level_rnn', 'multiple', '24H')
+const TTL = parseInt(process.env.TTL, 10) || (7 * 24 * 60 * 60)  // duration in seconds
+const TIMEOUT = parseInt(process.env.TIMEOUT, 10) || (30 * 60 * 1000) // duration in miliseconds
 // Now could be HP_RNN or HP_XGB depending on underlying prediction model
-const variable = process.env.VARIABLE || 'HP'
-const collection = 'hubeau-hydro-observations'
+const VARIABLE = process.env.VARIABLE || 'HP'
+const COLLECTION = 'hubeau-hydro-observations'
 // Read available models
-const models = fs.readdirSync(modelsPath)
-  .filter(model => fs.lstatSync(path.join(modelsPath, model)).isDirectory())
+const models = fs.readdirSync(MODELS_PATH)
+  .filter(model => fs.lstatSync(path.join(MODELS_PATH, model)).isDirectory())
 
 // Create a custom hook to generate tasks
 let generateTasks = (options) => {
@@ -28,7 +28,7 @@ let generateTasks = (options) => {
       tasks.push({
         id: code_station,
         options: {
-          url: `${options.baseUrl}/${model}`
+          url: `${options.BASE_URL}/${model}`
         }
       })
     })
@@ -44,7 +44,7 @@ export default {
   options: {
     workersLimit: 2,
     faultTolerant: true,
-    timeout: timeout
+    TIMEOUT: TIMEOUT
   },
   taskTemplate: {
     id: 'predictions/<%= taskId %>',
@@ -71,16 +71,16 @@ export default {
               // Use prediction feature as a template
               let feature = _.pick(predictionFeature, ['type', 'geometry', 'runTime', 'properties.code_station'])
               _.set(feature, 'time', time)
-              _.set(feature, `properties.${variable}`, values[index])
+              _.set(feature, `properties.${VARIABLE}`, values[index])
               features.push(feature)
             })
             if (features.length > 0) console.log('Found ' + features.length + ' new predictions on station ' + _.get(predictionFeature, 'properties.code_station'))
             item.data = features
           }
         },
-        writeMongoCollection: {
+        writeMongoCOLLECTION: {
           chunkSize: 256,
-          collection,
+          COLLECTION,
           transform: { unitMapping: { time: { asDate: 'utc' }, runTime: { asDate: 'utc' } } }
         },
         clearData: {}
@@ -97,15 +97,15 @@ export default {
           }
         }],
         connectMongo: {
-          url: dbUrl,
+          url: DB_URL,
           // Required so that client is forwarded from job to tasks
           clientPath: 'taskTemplate.client'
         },
-        createMongoCollection: {
+        createMongoCOLLECTION: {
           clientPath: 'taskTemplate.client',
-          collection,
+          COLLECTION,
           indices: [ 
-            [{ time: 1 }, { expireAfterSeconds: ttl }], // days in s
+            [{ time: 1 }, { expireAfterSeconds: TTL }], // days in s
             { 'properties.code_station': 1 },
             [{ 'properties.code_station': 1, time: -1 }, { background: true }],
             [{ 'properties.code_station': 1, 'properties.H': 1, time: -1 }, { background: true }],
@@ -114,7 +114,7 @@ export default {
           ],
         },
         generateTasks: {
-          baseUrl,
+          BASE_URL,
         }
       },
       after: {

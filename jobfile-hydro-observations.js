@@ -4,10 +4,10 @@ import { hooks } from '@kalisio/krawler'
 const outputDir = './output'
 
 // Configuration
-const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/hubeau'
-const ttl = parseInt(process.env.TTL, 10) || (7 * 24 * 60 * 60)  // duration in seconds
-const history =  parseInt(process.env.HISTORY, 10) || (1 * 24 * 60 * 60 * 1000) // duration in miliseconds
-const timeout = parseInt(process.env.TIMEOUT, 10) || (30 * 60 * 1000) // duration in miliseconds
+const DB_URL = process.env.DB_URL || 'mongodb://127.0.0.1:27017/hubeau'
+const TTL = parseInt(process.env.TTL, 10) || (7 * 24 * 60 * 60)  // duration in seconds
+const HISTORY =  parseInt(process.env.HISTORY, 10) || (1 * 24 * 60 * 60 * 1000) // duration in miliseconds
+const TIMEOUT = parseInt(process.env.TIMEOUT, 10) || (30 * 60 * 1000) // duration in miliseconds
 
 let dictstations = null
 let total = null
@@ -113,7 +113,7 @@ export default {
   options: {
     workersLimit: 5,
     faultTolerant: true,
-    timeout: timeout
+    TIMEOUT: TIMEOUT
   },
   taskTemplate: {
     id: 'observations/<%= taskId %>',
@@ -161,7 +161,7 @@ export default {
           }
         }],
         connectMongo: {
-          url: dbUrl,
+          url: DB_URL,
           // Required so that client is forwarded from job to tasks
           clientPath: 'taskTemplate.client'
         },
@@ -169,7 +169,7 @@ export default {
           clientPath: 'taskTemplate.client',
           collection: 'hubeau-hydro-observations',
           indices: [ 
-            [{ time: 1 }, { expireAfterSeconds: ttl }], // days in s
+            [{ time: 1 }, { expireAfterSeconds: TTL }], // days in s
             { 'properties.code_station': 1 },
             [{ 'properties.code_station': 1, time: -1 }, { background: true }],
             [{ 'properties.code_station': 1, 'properties.H': 1, time: -1 }, { background: true }],
@@ -193,14 +193,14 @@ export default {
             _.forEach(item.stations, (station) => {
               // In the dictstations we add the name of the station, and its geometry (its coordinates) but without the crs section
               // created with the code of the station as a key,
-              // we also prepare the date of the last observations (last_H and last_Q) for now it's the date of today minus history 
+              // we also prepare the date of the last observations (last_H and last_Q) for now it's the date of today minus HISTORY 
               let actualTime = Date.now()
               dictstations[station.properties.code_station] = { 
                 name: station.properties.libelle_station, 
                 geometry: {type :station.geometry.type, coordinates: station.geometry.coordinates}, 
-                last_H: (actualTime - history),
-                last_Q: (actualTime - history),
-                est: Math.round((actualTime-(actualTime - history)) / 300000)*2,
+                last_H: (actualTime - HISTORY),
+                last_Q: (actualTime - HISTORY),
+                est: Math.round((actualTime-(actualTime - HISTORY)) / 300000)*2,
               }
             })
           

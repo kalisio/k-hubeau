@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import { hooks } from '@kalisio/krawler'
 
-const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/hubeau'
+const DB_URL = process.env.DB_URL || 'mongodb://127.0.0.1:27017/hubeau'
 
 // Initialization of French department and overseas codes,There are 101 departments, the list makes 102 because 20 is not a code
 const CODE_DEP = process.env.CODE_DEP && process.env.CODE_DEP.split(',') || ['01','02','03','04','05','06','07','08','09'].concat([...Array(86).keys()].map(x => (x+10).toString()),['2A','2B'],["971","972","973","974","976"])
@@ -110,9 +110,16 @@ export default {
       before: {
         createStores: { id: 'memory' },
         connectMongo: {
-          url: dbUrl,
+          url: DB_URL,
           // Required so that client is forwarded from job to tasks
           clientPath: 'taskTemplate.client'
+        },
+        createLogger: {
+          loggerPath: 'taskTemplate.logger',
+          Console: {
+            format: winston.format.printf(log => winston.format.colorize().colorize(log.level, `${log.level}: ${log.message}`)),
+            level: 'verbose'
+          }
         },
         createMongoCollection: {
           clientPath: 'taskTemplate.client',
@@ -130,11 +137,17 @@ export default {
         disconnectMongo: {
           clientPath: 'taskTemplate.client'
         },
+        removeLogger: {
+          loggerPath: 'taskTemplate.logger'
+        },
         removeStores: [ 'memory' ]
       },
       error: {
         disconnectMongo: {
           clientPath: 'taskTemplate.client'
+        },
+        removeLogger: {
+          loggerPath: 'taskTemplate.logger'
         },
         removeStores: [ 'memory' ]
       }

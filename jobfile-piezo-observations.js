@@ -4,10 +4,10 @@ import { hooks } from '@kalisio/krawler'
 const outputDir = './output'
 
 // Configuration
-const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/hubeau'
-const ttl = parseInt(process.env.TTL, 10) || (7 * 24 * 60 * 60)  // duration in seconds
-const history =  parseInt(process.env.HISTORY, 10) || 86400000 // duration in miliseconds (must be full days)
-const timeout = parseInt(process.env.TIMEOUT, 10) || (30 * 60 * 1000) // duration in miliseconds
+const DB_URL = process.env.DB_URL || 'mongodb://127.0.0.1:27017/hubeau'
+const TTL = parseInt(process.env.TTL, 10) || (7 * 24 * 60 * 60)  // duration in seconds
+const HISTORY =  parseInt(process.env.HISTORY, 10) || 86400000 // duration in miliseconds (must be full days)
+const TIMEOUT = parseInt(process.env.TIMEOUT, 10) || (30 * 60 * 1000) // duration in miliseconds
 
 let dictstations = null
 let total=null
@@ -26,8 +26,8 @@ let generateTasks = (options) => {
       _.forEach(Object.keys(liststation), (code_station) => {
         str_code_station += code_station+","
       })
-      // Initial date is today minus the history and we want it in yyyy-mm-dd format
-      let initialDate = new Date(new Date() - history).toISOString().slice(0, 10)
+      // Initial date is today minus the HISTORY and we want it in yyyy-mm-dd format
+      let initialDate = new Date(new Date() - HISTORY).toISOString().slice(0, 10)
 
       // We remove the last character of the string (it's a ,) 
       str_code_station = str_code_station.substring(0, str_code_station.length - 1)
@@ -102,7 +102,7 @@ export default {
   options: {
     workersLimit: 45,
     faultTolerant: true,
-    timeout: timeout
+    TIMEOUT: TIMEOUT
   },
   taskTemplate: {
     id: 'observations/<%= taskId %>',
@@ -142,7 +142,7 @@ export default {
           }
         }],
         connectMongo: {
-          url: dbUrl,
+          url: DB_URL,
           // Required so that client is forwarded from job to tasks
           clientPath: 'taskTemplate.client'
         },
@@ -150,7 +150,7 @@ export default {
           clientPath: 'taskTemplate.client',
           collection: 'hubeau-piezo-observations',
           indices: [ 
-            [{ time: 1 }, { expireAfterSeconds: ttl }], // days in s
+            [{ time: 1 }, { expireAfterSeconds: TTL }], // days in s
             { 'properties.bss_id': 1 },
             [{ 'properties.bss_id': 1, time: -1 }, { background: true }],
             [{ 'properties.bss_id': 1, 'properties.profondeur_nappe': 1, time: -1 }, { background: true }],
@@ -183,7 +183,7 @@ export default {
               dictstations[station.properties.bss_id] = { 
                 geometry: {type :station.geometry.type, coordinates: station.geometry.coordinates}, 
                 // last obs is the 00:00:00 of the day before the actual time
-                last_obs: new Date(actualTime - actualTime % (history) - (history)).toISOString()}
+                last_obs: new Date(actualTime - actualTime % (HISTORY) - (HISTORY)).toISOString()}
             })
           }
         },
