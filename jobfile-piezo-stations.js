@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import { hooks } from '@kalisio/krawler'
+import winston from 'winston'
 
 const DB_URL = process.env.DB_URL || 'mongodb://127.0.0.1:27017/hubeau'
 
@@ -87,8 +88,14 @@ export default {
               }
             })
             item.data = stations
-            console.log('Task '+item.id.substring(9)+' : '+stations.length+' stations found [total : '+(totalStations+=stations.length)+'] [total in service : '+totalInService+']')
+            item.totalStations = totalStations
+            item.totalInService = totalInService
           }
+        },
+        log: (logger, item) => {
+          const count = Array.isArray(item.data) ? item.data.length : 0
+          totalStations += count
+          logger.info(`Task ${String(item.id).replace('stations/','')} : ${count} stations found [total : ${totalStations}] [total in service : ${totalInService}]`)
         },
         updateMongoCollection: {
           collection: 'hubeau-piezo-stations',

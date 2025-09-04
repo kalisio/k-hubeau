@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import winston from 'winston'
 
 const DB_URL = process.env.DB_URL || 'mongodb://127.0.0.1:27017/hubeau'
 
@@ -34,10 +35,10 @@ export default {
                 } else console.log('warning: station ' + name + ' is inactive' )
               })
             }
-            console.log('Found ' + stations.length + ' active stations')
             item.data = stations
           }
         },
+        log: (logger, item) => { logger.info(`Found ${item.data.length} active stations`)},
         updateMongoCollection: {
           collection: 'hubeau-hydro-stations',
           filter: { 'properties.code_station': '<%= properties.code_station %>' },
@@ -55,6 +56,13 @@ export default {
           // Required so that client is forwarded from job to tasks
           clientPath: 'taskTemplate.client'
         },
+        createLogger: {
+          loggerPath: 'taskTemplate.logger',
+          Console: {
+            format: winston.format.printf(log => winston.format.colorize().colorize(log.level, `${log.level}: ${log.message}`)),
+            level: 'verbose'
+          }
+        },
         createMongoCollection: {
           clientPath: 'taskTemplate.client',
           collection: 'hubeau-hydro-stations',
@@ -68,11 +76,17 @@ export default {
         disconnectMongo: {
           clientPath: 'taskTemplate.client'
         },
+        removeLogger: {
+          loggerPath: 'taskTemplate.logger'
+        },
         removeStores: [ 'memory' ]
       },
       error: {
         disconnectMongo: {
           clientPath: 'taskTemplate.client'
+        },
+        removeLogger: {
+          loggerPath: 'taskTemplate.logger'
         },
         removeStores: [ 'memory' ]
       }
