@@ -135,8 +135,7 @@ export default {
             'properties.code_station': '<%= properties.code_station %>',
             'time': '<%= time %>',
             'grandeur_hydro': '<%= grandeur_hydro %>'
-          },
-          
+          }
         },
         clearData: {}
       },
