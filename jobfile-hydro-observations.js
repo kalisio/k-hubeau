@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import { hooks } from '@kalisio/krawler'
 
-const outputDir = './output'
+const OUTPUT_DIR = './output'
 
 // Configuration
 const DB_URL = process.env.DB_URL || 'mongodb://127.0.0.1:27017/hubeau'
@@ -34,7 +34,7 @@ let generateTasks = (options) => {
       // We convert the date in ISOString
       initialDate = new Date(initialDate).toISOString()
 
-      // We remove the last character of the string (it's a ,) 
+      // We remove the last character of the string (it's a ,)
       str_code_station = str_code_station.substring(0, str_code_station.length - 1)
 
       let task = {
@@ -61,9 +61,9 @@ let processData = (options) => {
     let dataToSave=[]
     let stationsInUrl = item.options.url.split("code_entite=")[1].split("&")[0].split(",")
     if (item.data.count >20000) {
-      
+
       console.log('Too many results for task ' + item.id.substring(13) + ' : ' + item.data.count+ " should be less than 20000    "+ (parseInt(item.data.count, 10)-20000) + " Observations are missing")
-      console.log("Request had : "+stationsInUrl.length+" stations : "+stationsInUrl) 
+      console.log("Request had : "+stationsInUrl.length+" stations : "+stationsInUrl)
       _.forEach(stationsInUrl, (code_station) => {
         console.log("stations "+code_station+" had an estimation of "+dictstations["#"+code_station].est)
       })
@@ -71,7 +71,7 @@ let processData = (options) => {
     _.forEach(item.data.data, (obs) => {
       let timeObs= new Date(obs.date_obs)
       let station=dictstations["#"+obs.code_station]
-      
+
 
       // We check if the new observation is more recent than the last stored observation of the station
         if(obs.grandeur_hydro == "H" && timeObs > new Date(station.last_H) || obs.grandeur_hydro == "Q" && timeObs > new Date(station.last_Q)){
@@ -97,12 +97,10 @@ let processData = (options) => {
       console.log(dataToSave.length + ' new observations found by task ' + item.id.substring(13) + ' [ '+ stationsInUrl.length+' stns]  [total: ' + total + ']')
     }
     item.data = dataToSave
-    
+
     return hook
     }
 }
-
-
 
 hooks.registerHook('processData', processData)
 hooks.registerHook('generateTasks', generateTasks)
@@ -156,7 +154,7 @@ export default {
         }, {
           id: 'fs',
           options: {
-            path: outputDir
+            path: OUTPUT_DIR
           }
         }],
         connectMongo: {
@@ -167,7 +165,7 @@ export default {
         createMongoCollection: {
           clientPath: 'taskTemplate.client',
           collection: 'hubeau-hydro-observations',
-          indices: [ 
+          indices: [
             [{ time: 1 }, { expireAfterSeconds: TTL }], // days in s
             { 'properties.code_station': 1 },
             [{ 'properties.code_station': 1, time: -1 }, { background: true }],
@@ -182,6 +180,7 @@ export default {
           hook: 'readMongoCollection',
           clientPath: 'taskTemplate.client',
           collection: 'hubeau-hydro-stations',
+          filter: { 'properties.en_service': true },
           dataPath: 'data.stations'
         },
         createDict:{
@@ -192,17 +191,17 @@ export default {
             _.forEach(item.stations, (station) => {
               // In the dictstations we add the name of the station, and its geometry (its coordinates) but without the crs section
               // created with the code of the station as a key,
-              // we also prepare the date of the last observations (last_H and last_Q) for now it's the date of today minus HISTORY 
+              // we also prepare the date of the last observations (last_H and last_Q) for now it's the date of today minus HISTORY
               let actualTime = Date.now()
-              dictstations[station.properties.code_station] = { 
-                name: station.properties.libelle_station, 
-                geometry: {type :station.geometry.type, coordinates: station.geometry.coordinates}, 
+              dictstations[station.properties.code_station] = {
+                name: station.properties.libelle_station,
+                geometry: {type :station.geometry.type, coordinates: station.geometry.coordinates},
                 last_H: (actualTime - HISTORY),
                 last_Q: (actualTime - HISTORY),
                 est: Math.round((actualTime-(actualTime - HISTORY)) / 300000)*2,
               }
             })
-          
+
             console.log("Searching for stored observations in the database")
             dbSearchTime = new Date().getTime()
           }
@@ -231,9 +230,7 @@ export default {
               }
             }
           ],
-        allowDiskUse: true
-
-          
+          allowDiskUse: true
         },
         lastStoredQ:{
           hook: 'createMongoAggregation',
@@ -259,16 +256,14 @@ export default {
               }
             }
           ],
-        allowDiskUse: true
-
-          
+          allowDiskUse: true
         },
         FinalDict:{
           hook: 'apply',
           function: (item) => {
             console.log('Search ended at : '+new Date().toISOString())
-            console.log('Search took : '+((new Date().getTime()-dbSearchTime)/1000)+' seconds')  
-            
+            console.log('Search took : '+((new Date().getTime()-dbSearchTime)/1000)+' seconds')
+
             // We convert item.lastH and lastQ into a dict with the station code as a key and the date of the last observation as a value
             item.lastH = _.keyBy(item.lastH, '_id')
             item.lastQ = _.keyBy(item.lastQ, '_id')
@@ -288,7 +283,7 @@ export default {
 
               // We take the oldest date between the two
               station.last_obs=Math.min(new Date(station.last_H), new Date(station.last_Q))
-              
+
 
               // console.log("Station "+code_station+" : last H : "+new Date(station.last_H).toISOString()+" last Q : "+ new Date(station.last_Q).toISOString()+" last obs : "+new Date(station.last_obs).toISOString())
               // We calculate the number of observations that we estimate to receive (it's a maximum)
@@ -308,7 +303,7 @@ export default {
             let lastStationEst=dictstations[Object.keys(dictstations)[0]].est
             _.forEach(Object.keys(dictstations), (code_station) => {
               let estimation=dictstations[code_station].est
-              
+
               // a batch needs to have less than `size` observations, less than 570 stations and the difference between the estimation of the last station and the current station needs to be less than 20
               // because the query will be based on the station with the oldest time of last observation, meaning we can get observations we already have
               if (totalBatchEst + estimation < size && Object.keys( batch[batch.length-1]).length < 570 && Math.abs(estimation - lastStationEst) <= 20){
@@ -327,13 +322,13 @@ export default {
                 // if(Object.keys( batch[batch.length-1]).length >= 570){
                 //   console.log('new batch because of number of stations')
                 // }
-                
+
                 batch.push({[code_station]: dictstations[code_station]});
                 totalBatchEst = estimation
                 lastStationEst=estimation
               }
-              
-            })    
+
+            })
             item.batch=batch
           }
         },

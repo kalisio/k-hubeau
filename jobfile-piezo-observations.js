@@ -10,9 +10,7 @@ const HISTORY =  parseInt(process.env.HISTORY, 10) || 86400000 // duration in mi
 const TIMEOUT = parseInt(process.env.TIMEOUT, 10) || (30 * 60 * 1000) // duration in miliseconds
 
 let dictstations = null
-let total=null
-
-
+let total = null
 
 // Create a custom hook to generate tasks
 let generateTasks = (options) => {
@@ -29,7 +27,7 @@ let generateTasks = (options) => {
       // Initial date is today minus the HISTORY and we want it in yyyy-mm-dd format
       let initialDate = new Date(new Date() - HISTORY).toISOString().slice(0, 10)
 
-      // We remove the last character of the string (it's a ,) 
+      // We remove the last character of the string (it's a ,)
       str_code_station = str_code_station.substring(0, str_code_station.length - 1)
       let id=hook.data.batch.indexOf(liststation)
       // console.log("\nTask "+id+" : "+str_code_station)
@@ -59,12 +57,12 @@ let processData = (options) => {
     if (item.data.count >20000) {
       let station = item.options.url.split("bss_id=")[1].split("&")[0].split(",")
       console.log('Too many results for task ' + item.id.substring(13) + ' : ' + item.data.count+ " should be less than 20000")
-      console.log("Request had : "+station.length+" stations : "+station) 
+      console.log("Request had : "+station.length+" stations : "+station)
     }
     _.forEach(item.data.data, (obs) => {
       let timeObs= new Date(obs.date_mesure)
       let station=dictstations[obs.bss_id]
-      
+
 
       // We check if the new observation is more recent than the last_obs of the station
       if (timeObs > new Date(station.last_obs)){
@@ -149,7 +147,7 @@ export default {
         createMongoCollection: {
           clientPath: 'taskTemplate.client',
           collection: 'hubeau-piezo-observations',
-          indices: [ 
+          indices: [
             [{ time: 1 }, { expireAfterSeconds: TTL }], // days in s
             { 'properties.bss_id': 1 },
             [{ 'properties.bss_id': 1, time: -1 }, { background: true }],
@@ -164,10 +162,8 @@ export default {
           hook: 'readMongoCollection',
           clientPath: 'taskTemplate.client',
           collection: 'hubeau-piezo-stations',
-          dataPath: 'data.stations',
-          query: {
-            'properties.in_service': true
-          }
+          query: { 'properties.en_service': true },
+          dataPath: 'data.stations'
         },
         createDict:{
           hook: 'apply',
@@ -180,8 +176,8 @@ export default {
               // we also prepare the date of the last observation which is currently unknown
               let actualTime = Date.now()
               // console.log(station.geometry.type)
-              dictstations[station.properties.bss_id] = { 
-                geometry: {type :station.geometry.type, coordinates: station.geometry.coordinates}, 
+              dictstations[station.properties.bss_id] = {
+                geometry: {type :station.geometry.type, coordinates: station.geometry.coordinates},
                 // last obs is the 00:00:00 of the day before the actual time
                 last_obs: new Date(actualTime - actualTime % (HISTORY) - (HISTORY)).toISOString()}
             })

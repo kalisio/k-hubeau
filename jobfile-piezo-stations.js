@@ -76,11 +76,11 @@ export default {
                 {
                   console.log("Warning: station "+feature.properties.bss_id+" is not in service anymore (date_fin_mesure = "+feature.properties.date_fin_mesure+")")
                   // We add a property to the station to indicate that it is not up to date (in_service = false)
-                  feature.properties.in_service = false
+                  feature.properties.en_service = false
                 }
                 else{
                   // We add a property to the station to indicate that it is up to date (in_service = true)
-                  feature.properties.in_service = true
+                  feature.properties.en_service = true
                   totalInService++
                 }
                 stations.push(feature)
@@ -132,7 +132,7 @@ export default {
           clientPath: 'taskTemplate.client',
           collection: 'hubeau-piezo-stations',
           indices: [
-            [{ 'properties.bss_id': 1 }, { unique: true }], 
+            [{ 'properties.bss_id': 1 }, { unique: true }],
             { geometry: '2dsphere' }
           ]
         },
