@@ -82,6 +82,7 @@ let processData = (options) => {
             type: 'Feature',
             time: timeObs.toISOString(),
             grandeur_hydro: obs.grandeur_hydro,
+            en_service: true,
             geometry: station.geometry,
             properties: {
               name: station.name,
