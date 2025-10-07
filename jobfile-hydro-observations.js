@@ -82,11 +82,11 @@ let processData = (options) => {
             type: 'Feature',
             time: timeObs.toISOString(),
             grandeur_hydro: obs.grandeur_hydro,
-            en_service: true,
             geometry: station.geometry,
             properties: {
               name: station.name,
               code_station: "#"+obs.code_station,
+              en_service: true,
               [obs.grandeur_hydro]: obs.resultat_obs / 1000
             }
           }
