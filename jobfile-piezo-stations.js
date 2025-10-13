@@ -70,21 +70,18 @@ export default {
             _.forEach(item.data.features, (feature) => {
               //  We only keep the stations with a geometry and that have a `date_fin_mesure` after 2022-01-01 (older stations are not updated anymore)
               if (!feature.geometry) console.log('Warning: station '+feature.properties.bss_id+' has no geometry')
-              else{
-
-                if (new Date(feature.properties.date_fin_mesure) < new Date(DATE_FIN_MESURE))
-                {
+              else {
+                feature.properties.name = `${feature.properties.code_bss} (${feature.properties.nom_commune})`
+                if (new Date(feature.properties.date_fin_mesure) < new Date(DATE_FIN_MESURE)) {
                   console.log("Warning: station "+feature.properties.bss_id+" is not in service anymore (date_fin_mesure = "+feature.properties.date_fin_mesure+")")
                   // We add a property to the station to indicate that it is not up to date (in_service = false)
                   feature.properties.en_service = false
-                }
-                else{
+                } else {
                   // We add a property to the station to indicate that it is up to date (in_service = true)
                   feature.properties.en_service = true
                   totalInService++
                 }
                 stations.push(feature)
-
               }
             })
             item.data = stations

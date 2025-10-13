@@ -71,6 +71,8 @@ let processData = (options) => {
           time: timeObs.toISOString(),
           geometry: station.geometry,
           properties: {
+            name: station.name,
+            en_service: true,
             bss_id: obs.bss_id,
             profondeur_nappe: obs.profondeur_nappe,
             niveau_eau_ngf : obs.niveau_eau_ngf
@@ -178,6 +180,7 @@ export default {
               // console.log(station.geometry.type)
               dictstations[station.properties.bss_id] = {
                 geometry: {type :station.geometry.type, coordinates: station.geometry.coordinates},
+                name: station.properties.name,
                 // last obs is the 00:00:00 of the day before the actual time
                 last_obs: new Date(actualTime - actualTime % (HISTORY) - (HISTORY)).toISOString()}
             })

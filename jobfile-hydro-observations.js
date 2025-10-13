@@ -95,7 +95,7 @@ let processData = (options) => {
     })
     if (dataToSave.length > 0) {
       total += dataToSave.length
-      console.log(dataToSave.length + ' new observations found by task ' + item.id.substring(13) + ' [ '+ stationsInUrl.length+' stns]  [total: ' + total + ']')
+      console.log(dataToSave.length + ' new observations found by task ' + item.id.substring(13) + ' [ '+ stationsInUrl.length+' stations]  [total: ' + total + ']')
     }
     item.data = dataToSave
 
