@@ -3,7 +3,6 @@
 [![Latest Release](https://img.shields.io/github/v/tag/kalisio/k-hubeau?sort=semver&label=latest)](https://github.com/kalisio/k-hubeau/releases)
 [![CI](https://github.com/kalisio/k-hubeau/actions/workflows/main.yaml/badge.svg)](https://github.com/kalisio/k-hubeau/actions/workflows/main.yaml)
 [![Maintainability Issues](https://sonar.portal.kalisio.com/api/project_badges/measure?project=kalisio-k-hubeau&metric=software_quality_maintainability_issues&token=sqb_d11e737aa1dc67aab05bf59cf5b0fa4bb3c83610)](https://sonar.portal.kalisio.com/dashboard?id=kalisio-k-hubeau)
-[![Coverage](https://sonar.portal.kalisio.com/api/project_badges/measure?project=kalisio-k-hubeau&metric=coverage&token=sqb_d11e737aa1dc67aab05bf59cf5b0fa4bb3c83610)](https://sonar.portal.kalisio.com/dashboard?id=kalisio-k-hubeau)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A [Krawler](https://kalisio.github.io/krawler/) based service to download data from French open portal [Hub'Eau](https://hubeau.eaufrance.fr/)
