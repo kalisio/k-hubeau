@@ -32,7 +32,7 @@
     "postversion": "git push origin HEAD --tags"
   },
   "dependencies": {
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "winston": "^3.17.0"
   },
   "devDependencies": {},
